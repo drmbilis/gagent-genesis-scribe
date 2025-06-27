@@ -3,11 +3,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Brain, Upload, Download, MessageSquare, User, Settings, LogOut, Bell, History, CreditCard, Shield, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useTokens } from "@/hooks/useTokens";
+import { useState } from "react";
+import SystemStatus from "@/components/SystemStatus";
+import TokenInsufficient from "@/components/TokenInsufficient";
 
 const Dashboard = () => {
-  const handleLogout = () => {
-    console.log("Logout");
-    // Logout logic will be implemented with Supabase
+  const { user, signOut } = useAuth();
+  const { tokens } = useTokens();
+  const [showTokenModal, setShowTokenModal] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut();
+  };
+
+  const handleSendMessage = () => {
+    if (!tokens || tokens.balance < 10) {
+      setShowTokenModal(true);
+      return;
+    }
+    // Process AI message (this will be implemented later)
+    console.log("Processing AI message...");
   };
 
   return (
@@ -50,9 +67,14 @@ const Dashboard = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        {/* System Status */}
+        <SystemStatus />
+        
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-          <p className="text-gray-600">GAGENT AI asistanınızla çalışmaya başlayın</p>
+          <p className="text-gray-600">
+            Hoş geldin {user?.email}! GAGENT AI asistanınızla çalışmaya başlayın
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -61,7 +83,12 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Kalan Token</p>
-                <p className="text-3xl font-bold">2,500</p>
+                <p className="text-3xl font-bold">{tokens?.balance?.toLocaleString() || '0'}</p>
+                {(tokens?.balance || 0) < 100 && (
+                  <Link to="/pricing" className="text-xs text-red-600 hover:underline">
+                    Token ekle →
+                  </Link>
+                )}
               </div>
               <div className="gradient-primary p-3 rounded-lg">
                 <Brain className="h-6 w-6 text-white" />
@@ -72,8 +99,8 @@ const Dashboard = () => {
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Toplam Sohbet</p>
-                <p className="text-3xl font-bold">47</p>
+                <p className="text-sm text-gray-600">Toplam Kullanılan</p>
+                <p className="text-3xl font-bold">{tokens?.total_used?.toLocaleString() || '0'}</p>
               </div>
               <div className="gradient-primary p-3 rounded-lg">
                 <MessageSquare className="h-6 w-6 text-white" />
@@ -84,8 +111,8 @@ const Dashboard = () => {
           <Card className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Yüklenen Dosya</p>
-                <p className="text-3xl font-bold">12</p>
+                <p className="text-sm text-gray-600">Toplam Satın Alınan</p>
+                <p className="text-3xl font-bold">{tokens?.total_purchased?.toLocaleString() || '0'}</p>
               </div>
               <div className="gradient-primary p-3 rounded-lg">
                 <Upload className="h-6 w-6 text-white" />
@@ -156,10 +183,20 @@ const Dashboard = () => {
                 placeholder="Mesajınızı yazın..."
                 className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <Button className="gradient-primary text-white border-0">
+              <Button 
+                className="gradient-primary text-white border-0"
+                onClick={handleSendMessage}
+                disabled={!tokens || tokens.balance < 10}
+              >
                 Gönder
               </Button>
             </div>
+            {tokens && tokens.balance < 10 && (
+              <p className="text-xs text-red-600 mt-2">
+                Mesaj göndermek için en az 10 token gerekli. 
+                <Link to="/pricing" className="underline ml-1">Token satın al</Link>
+              </p>
+            )}
           </Card>
 
           {/* File Management */}
@@ -197,6 +234,12 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
+
+      {/* Token Insufficient Modal */}
+      <TokenInsufficient 
+        isVisible={showTokenModal}
+        onClose={() => setShowTokenModal(false)}
+      />
     </div>
   );
 };
