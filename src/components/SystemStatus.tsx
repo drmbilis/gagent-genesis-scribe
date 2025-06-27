@@ -21,7 +21,13 @@ const SystemStatus = () => {
         .limit(1)
         .single();
       
-      if (data) setStatus(data);
+      if (data) {
+        // Type assertion to ensure status is one of our allowed values
+        setStatus({
+          status: data.status as 'operational' | 'maintenance' | 'degraded' | 'outage',
+          message: data.message || ''
+        });
+      }
     };
 
     fetchStatus();
