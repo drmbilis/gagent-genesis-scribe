@@ -2,59 +2,60 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Star, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   const plans = [
     {
-      name: "Başlangıç",
-      price: "Ücretsiz",
-      description: "Bireysel kullanım için ideal",
+      name: "Starter",
+      price: "Free",
+      description: "Perfect for individual use",
       features: [
-        "Günlük 50 AI sorgusu",
-        "Temel dosya işleme",
-        "5 GB depolama",
-        "Topluluk desteği",
-        "Temel analitik"
+        "50 AI queries per day",
+        "Basic file processing",
+        "5 GB storage",
+        "Community support",
+        "Basic analytics"
       ],
-      tokens: "500 token/ay",
-      buttonText: "Ücretsiz Başla",
+      tokens: "500 tokens/month",
+      buttonText: "Start Free",
       isPopular: false
     },
     {
       name: "Pro",
-      price: "₺99",
-      period: "/ay",
-      description: "Profesyoneller için güçlü çözüm",
+      price: "$29",
+      period: "/month",
+      description: "Powerful solution for professionals",
       features: [
-        "Günlük 500 AI sorgusu",
-        "Gelişmiş dosya işleme",
-        "50 GB depolama",
-        "Öncelikli destek",
-        "Detaylı analitik",
-        "API erişimi",
-        "Takım işbirliği"
+        "500 AI queries per day",
+        "Advanced file processing",
+        "50 GB storage",
+        "Priority support",
+        "Detailed analytics",
+        "API access",
+        "Team collaboration"
       ],
-      tokens: "5,000 token/ay",
-      buttonText: "Pro'ya Geç",
+      tokens: "5,000 tokens/month",
+      buttonText: "Go Pro",
       isPopular: true
     },
     {
       name: "Enterprise",
-      price: "₺299",
-      period: "/ay",
-      description: "Kurumsal çözümler",
+      price: "$99",
+      period: "/month",
+      description: "Enterprise solutions",
       features: [
-        "Sınırsız AI sorgusu",
-        "Profesyonel dosya işleme",
-        "500 GB depolama",
-        "7/24 özel destek",
-        "Kurumsal analitik",
-        "Full API erişimi",
-        "Özel entegre",
-        "SLA garantisi"
+        "Unlimited AI queries",
+        "Professional file processing",
+        "500 GB storage",
+        "24/7 dedicated support",
+        "Enterprise analytics",
+        "Full API access",
+        "Custom integrations",
+        "SLA guarantee"
       ],
-      tokens: "50,000 token/ay",
-      buttonText: "Enterprise Al",
+      tokens: "50,000 tokens/month",
+      buttonText: "Get Enterprise",
       isPopular: false
     }
   ];
@@ -64,11 +65,11 @@ const Pricing = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Fiyatlandırma</span>
+            <span className="gradient-text">Pricing</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            İhtiyacınıza uygun planı seçin ve GAGENT'ın gücünü keşfedin. 
-            Tüm planlar 30 gün para iade garantisi ile gelir.
+            Choose the plan that suits your needs and discover the power of GAGENT. 
+            All plans come with a 30-day money-back guarantee.
           </p>
         </div>
 
@@ -86,7 +87,7 @@ const Pricing = () => {
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="gradient-primary px-4 py-2 rounded-full text-white text-sm font-medium flex items-center space-x-1">
                     <Star className="h-4 w-4" />
-                    <span>En Popüler</span>
+                    <span>Most Popular</span>
                   </div>
                 </div>
               )}
@@ -116,16 +117,18 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <Button 
-                className={`w-full py-3 ${
-                  plan.isPopular 
-                    ? 'gradient-primary text-white border-0 hover:opacity-90' 
-                    : 'border border-gray-300 hover:bg-gray-50'
-                }`}
-                variant={plan.isPopular ? "default" : "outline"}
-              >
-                {plan.buttonText}
-              </Button>
+              <Link to="/auth" className="block">
+                <Button 
+                  className={`w-full py-3 ${
+                    plan.isPopular 
+                      ? 'gradient-primary text-white border-0 hover:opacity-90' 
+                      : 'border border-gray-300 hover:bg-gray-50'
+                  }`}
+                  variant={plan.isPopular ? "default" : "outline"}
+                >
+                  {plan.buttonText}
+                </Button>
+              </Link>
             </Card>
           ))}
         </div>
@@ -133,12 +136,12 @@ const Pricing = () => {
         {/* Additional Info */}
         <div className="text-center mt-12 space-y-4">
           <p className="text-gray-600">
-            Tüm planlar 30 gün ücretsiz deneme süresi ile gelir
+            All plans come with a 30-day free trial period
           </p>
           <div className="flex flex-wrap justify-center items-center space-x-8 text-sm text-gray-500">
-            <span>✓ Kredi kartı gerekmez</span>
-            <span>✓ İstediğiniz zaman iptal edin</span>
-            <span>✓ 30 gün para iade garantisi</span>
+            <span>✓ No credit card required</span>
+            <span>✓ Cancel anytime</span>
+            <span>✓ 30-day money-back guarantee</span>
           </div>
         </div>
       </div>

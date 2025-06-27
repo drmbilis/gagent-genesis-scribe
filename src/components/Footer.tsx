@@ -1,5 +1,6 @@
 
 import { Brain, Mail, Phone, MapPin, Github, Twitter, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -15,8 +16,8 @@ const Footer = () => {
               <span className="text-2xl font-bold gradient-text">GAGENT</span>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
-              Yapay zeka teknolojisi ile geleceği şekillendiren platform. 
-              İş süreçlerinizi otomatikleştirin, yaratıcılığınızı artırın.
+              The platform that shapes the future with artificial intelligence technology. 
+              Automate your business processes, enhance your creativity.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -33,11 +34,12 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4">Hızlı Bağlantılar</h3>
+            <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="#features" className="hover:text-white transition-colors">Özellikler</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Fiyatlandırma</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Dokümantasyon</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
+              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
               <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
             </ul>
@@ -45,7 +47,7 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold mb-4">İletişim</h3>
+            <h3 className="font-semibold mb-4">Contact</h3>
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
@@ -53,11 +55,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+90 212 555 0123</span>
+                <span>+1 (555) 123-4567</span>
               </li>
               <li className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
-                <span>İstanbul, Türkiye</span>
+                <span>San Francisco, CA</span>
               </li>
             </ul>
           </div>
@@ -67,12 +69,12 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2024 GAGENT. Tüm hakları saklıdır.
+              © 2024 GAGENT. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white transition-colors">Gizlilik Politikası</a>
-              <a href="#" className="hover:text-white transition-colors">Kullanım Şartları</a>
-              <a href="#" className="hover:text-white transition-colors">Çerez Politikası</a>
+              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link to="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
             </div>
           </div>
         </div>

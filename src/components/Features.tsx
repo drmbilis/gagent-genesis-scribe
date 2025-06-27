@@ -19,63 +19,63 @@ const Features = () => {
   const features = [
     {
       icon: Brain,
-      title: "Gelişmiş AI Modeli",
-      description: "En son teknoloji AI modelleri ile doğal dil işleme ve yaratıcı içerik üretimi"
+      title: "Advanced AI Model",
+      description: "Natural language processing and creative content generation with latest AI technology"
     },
     {
       icon: MessageSquare,
-      title: "Akıllı Sohbet",
-      description: "Gerçek zamanlı AI sohbet sistemi ile anında yanıtlar ve etkileşim"
+      title: "Smart Chat",
+      description: "Real-time AI chat system with instant responses and interaction"
     },
     {
       icon: Upload,
-      title: "Dosya Yükleme",
-      description: "Metin, PDF ve çeşitli formatlarda dosyalarınızı yükleyin ve işletin"
+      title: "File Upload",
+      description: "Upload and process your files in text, PDF and various formats"
     },
     {
       icon: Download,
-      title: "Sonuç İndirme",
-      description: "AI'ın işlediği dosyalarınızı istediğiniz formatta indirin"
+      title: "Result Download",
+      description: "Download AI-processed files in your desired format"
     },
     {
       icon: Coins,
-      title: "Token Sistemi",
-      description: "Adil kullanım için token bazlı ödeme sistemi ve esnek paketler"
+      title: "Token System",
+      description: "Token-based payment system and flexible packages for fair usage"
     },
     {
       icon: Shield,
-      title: "Güvenlik",
-      description: "End-to-end şifreleme ile verileriniz tamamen güvende"
+      title: "Security",
+      description: "Your data is completely safe with end-to-end encryption"
     },
     {
       icon: FileText,
-      title: "Çoklu Format",
-      description: "PDF, DOCX, TXT ve daha birçok dosya formatını destekliyoruz"
+      title: "Multiple Formats",
+      description: "We support PDF, DOCX, TXT and many more file formats"
     },
     {
       icon: Zap,
-      title: "Hızlı İşlem",
-      description: "Yüksek performanslı sunucularla saniyeler içinde sonuç"
+      title: "Fast Processing",
+      description: "Results in seconds with high-performance servers"
     },
     {
       icon: Users,
-      title: "Takım Çalışması",
-      description: "Ekibinizle birlikte çalışın ve projeleri paylaşın"
+      title: "Team Collaboration",
+      description: "Work with your team and share projects together"
     },
     {
       icon: BarChart3,
       title: "Analytics",
-      description: "Detaylı kullanım istatistikleri ve analitik raporlar"
+      description: "Detailed usage statistics and analytical reports"
     },
     {
       icon: Lock,
-      title: "Gizlilik",
-      description: "Verileriniz hiçbir zaman üçüncü taraflarla paylaşılmaz"
+      title: "Privacy",
+      description: "Your data is never shared with third parties"
     },
     {
       icon: Globe,
-      title: "24/7 Erişim",
-      description: "Dünyanın her yerinden, her zaman platform erişimi"
+      title: "24/7 Access",
+      description: "Platform access anytime, anywhere in the world"
     }
   ];
 
@@ -84,11 +84,11 @@ const Features = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Güçlü Özellikler</span>
+            <span className="gradient-text">Powerful Features</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            GAGENT platformu, modern AI teknolojileri ile donatılmış kapsamlı 
-            özellikleriyle iş akışınızı devrim niteliğinde değiştirecek
+            GAGENT platform will revolutionize your workflow with comprehensive 
+            features equipped with modern AI technologies
           </p>
         </div>
 
@@ -115,11 +115,11 @@ const Features = () => {
         <div className="mt-20 grid md:grid-cols-4 gap-8 text-center">
           <div className="space-y-2">
             <div className="text-4xl font-bold gradient-text">50K+</div>
-            <div className="text-gray-600">Aktif Kullanıcı</div>
+            <div className="text-gray-600">Active Users</div>
           </div>
           <div className="space-y-2">
             <div className="text-4xl font-bold gradient-text">1M+</div>
-            <div className="text-gray-600">İşlenen Dosya</div>
+            <div className="text-gray-600">Files Processed</div>
           </div>
           <div className="space-y-2">
             <div className="text-4xl font-bold gradient-text">99.9%</div>
@@ -127,7 +127,7 @@ const Features = () => {
           </div>
           <div className="space-y-2">
             <div className="text-4xl font-bold gradient-text">24/7</div>
-            <div className="text-gray-600">Destek</div>
+            <div className="text-gray-600">Support</div>
           </div>
         </div>
       </div>
