@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Brain, Upload, Download, MessageSquare, User, Settings, LogOut } from "lucide-react";
+import { Brain, Upload, Download, MessageSquare, User, Settings, LogOut, Bell, History, CreditCard, Shield, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const handleLogout = () => {
@@ -23,10 +24,18 @@ const Dashboard = () => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Profil
-              </Button>
+              <Link to="/notifications">
+                <Button variant="outline" size="sm">
+                  <Bell className="h-4 w-4 mr-2" />
+                  Bildirimler
+                </Button>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Profil
+                </Button>
+              </Link>
               <Button variant="outline" size="sm">
                 <Settings className="h-4 w-4 mr-2" />
                 Ayarlar
@@ -84,6 +93,49 @@ const Dashboard = () => {
             </div>
           </Card>
         </div>
+
+        {/* Quick Actions */}
+        <Card className="p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4">Hızlı Erişim</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link to="/tokens">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <Brain className="h-5 w-5 mr-3" />
+                Token Yönetimi
+              </Button>
+            </Link>
+            <Link to="/history">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <History className="h-5 w-5 mr-3" />
+                Geçmiş
+              </Button>
+            </Link>
+            <Link to="/billing">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <CreditCard className="h-5 w-5 mr-3" />
+                Faturalama
+              </Button>
+            </Link>
+            <Link to="/security">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <Shield className="h-5 w-5 mr-3" />
+                Güvenlik
+              </Button>
+            </Link>
+            <Link to="/referral">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <Users className="h-5 w-5 mr-3" />
+                Referans
+              </Button>
+            </Link>
+            <Link to="/notifications">
+              <Button variant="outline" className="w-full justify-start h-12">
+                <Bell className="h-5 w-5 mr-3" />
+                Bildirimler
+              </Button>
+            </Link>
+          </div>
+        </Card>
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8">

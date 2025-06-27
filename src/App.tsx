@@ -13,6 +13,11 @@ import Profile from "./pages/Profile";
 import Tokens from "./pages/Tokens";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Notifications from "./pages/Notifications";
+import History from "./pages/History";
+import Billing from "./pages/Billing";
+import Security from "./pages/Security";
+import Referral from "./pages/Referral";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +36,11 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/tokens" element={<Tokens />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/referral" element={<Referral />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
