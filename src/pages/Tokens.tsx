@@ -13,15 +13,15 @@ const Tokens = () => {
   ];
 
   const purchaseHistory = [
-    { date: "2024-01-15", tokens: 5000, price: 99, status: "Tamamlandı" },
-    { date: "2024-01-10", tokens: 1000, price: 29, status: "Tamamlandı" },
-    { date: "2024-01-05", tokens: 2000, price: 49, status: "Tamamlandı" }
+    { date: "2024-01-15", tokens: 5000, price: 99, status: "Completed" },
+    { date: "2024-01-10", tokens: 1000, price: 29, status: "Completed" },
+    { date: "2024-01-05", tokens: 2000, price: 49, status: "Completed" }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -32,8 +32,8 @@ const Tokens = () => {
             </div>
             
             <Link to="/dashboard">
-              <Button variant="outline">
-                Dashboard'a Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Dashboard
               </Button>
             </Link>
           </div>
@@ -42,23 +42,23 @@ const Tokens = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Token Yönetimi</h1>
-          <p className="text-gray-600">Token bakiyenizi görüntüleyin ve yeni token satın alın</p>
+          <h1 className="text-4xl font-bold mb-2 gradient-text">Token Management</h1>
+          <p className="text-gray-300 text-lg">View your token balance and purchase new tokens</p>
         </div>
 
         {/* Current Balance */}
-        <Card className="p-8 mb-8 gradient-primary text-white">
+        <Card className="p-8 mb-8 gradient-primary text-white border-0 animate-glow">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2">Mevcut Token Bakiyesi</h2>
+              <h2 className="text-2xl font-semibold mb-2">Current Token Balance</h2>
               <div className="flex items-center space-x-2">
                 <Zap className="h-8 w-8" />
                 <span className="text-4xl font-bold">2,500</span>
-                <span className="text-xl">Token</span>
+                <span className="text-xl">Tokens</span>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm opacity-90">Son Kullanım</p>
+              <p className="text-sm opacity-90">Last Used</p>
               <p className="text-lg">2024-01-20</p>
             </div>
           </div>
@@ -67,42 +67,42 @@ const Tokens = () => {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Token Packages */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center">
+            <h2 className="text-2xl font-semibold mb-6 flex items-center text-white">
               <Plus className="h-6 w-6 mr-2" />
-              Token Paketleri
+              Token Packages
             </h2>
             <div className="space-y-4">
               {tokenPackages.map((pkg, index) => (
                 <Card 
                   key={index} 
-                  className={`p-6 ${pkg.popular ? 'ring-2 ring-blue-500 scale-105' : ''} transition-all duration-300 hover:scale-105`}
+                  className={`p-6 glass-effect border-white/10 hover:border-white/20 transition-all-smooth card-hover ${pkg.popular ? 'ring-2 ring-blue-500' : ''}`}
                 >
                   {pkg.popular && (
                     <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium mb-4 inline-block">
-                      En Popüler
+                      Most Popular
                     </div>
                   )}
                   
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <div className="flex items-center space-x-2 mb-2">
-                        <Zap className="h-5 w-5 text-blue-500" />
-                        <span className="text-2xl font-bold">{pkg.tokens.toLocaleString()}</span>
-                        <span className="text-gray-600">Token</span>
+                        <Zap className="h-5 w-5 text-blue-400" />
+                        <span className="text-2xl font-bold text-white">{pkg.tokens.toLocaleString()}</span>
+                        <span className="text-gray-300">Tokens</span>
                       </div>
-                      <p className="text-3xl font-bold text-blue-600">₺{pkg.price}</p>
+                      <p className="text-3xl font-bold text-blue-400">${pkg.price}</p>
                     </div>
                     <Button 
-                      className={pkg.popular ? 'gradient-primary text-white border-0' : 'border border-gray-300'}
-                      variant={pkg.popular ? 'default' : 'outline'}
+                      className={pkg.popular ? 'gradient-primary text-white border-0' : 'border border-white/20 text-gray-300 hover:text-white hover:bg-white/10'}
+                      variant={pkg.popular ? 'default' : 'ghost'}
                     >
                       <CreditCard className="h-4 w-4 mr-2" />
-                      Satın Al
+                      Purchase
                     </Button>
                   </div>
                   
-                  <div className="text-sm text-gray-600">
-                    <p>Token başına: ₺{(pkg.price / pkg.tokens * 1000).toFixed(3)}</p>
+                  <div className="text-sm text-gray-400">
+                    <p>Per token: ${(pkg.price / pkg.tokens).toFixed(4)}</p>
                   </div>
                 </Card>
               ))}
@@ -111,24 +111,24 @@ const Tokens = () => {
 
           {/* Purchase History */}
           <div>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center">
+            <h2 className="text-2xl font-semibold mb-6 flex items-center text-white">
               <History className="h-6 w-6 mr-2" />
-              Satın Alma Geçmişi
+              Purchase History
             </h2>
-            <Card className="p-6">
+            <Card className="p-6 glass-effect border-white/10">
               <div className="space-y-4">
                 {purchaseHistory.map((purchase, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg border border-white/10">
                     <div>
                       <div className="flex items-center space-x-2 mb-1">
-                        <Zap className="h-4 w-4 text-blue-500" />
-                        <span className="font-semibold">{purchase.tokens.toLocaleString()} Token</span>
+                        <Zap className="h-4 w-4 text-blue-400" />
+                        <span className="font-semibold text-white">{purchase.tokens.toLocaleString()} Tokens</span>
                       </div>
-                      <p className="text-sm text-gray-600">{purchase.date}</p>
+                      <p className="text-sm text-gray-400">{purchase.date}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold">₺{purchase.price}</p>
-                      <span className="text-sm text-green-600">{purchase.status}</span>
+                      <p className="font-semibold text-white">${purchase.price}</p>
+                      <span className="text-sm text-green-400">{purchase.status}</span>
                     </div>
                   </div>
                 ))}
@@ -137,7 +137,7 @@ const Tokens = () => {
               {purchaseHistory.length === 0 && (
                 <div className="text-center py-8">
                   <History className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600">Henüz token satın alımınız yok</p>
+                  <p className="text-gray-400">No token purchases yet</p>
                 </div>
               )}
             </Card>

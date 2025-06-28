@@ -23,14 +23,13 @@ const Dashboard = () => {
       setShowTokenModal(true);
       return;
     }
-    // Process AI message (this will be implemented later)
     console.log("Processing AI message...");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -42,24 +41,24 @@ const Dashboard = () => {
             
             <div className="flex items-center space-x-4">
               <Link to="/notifications">
-                <Button variant="outline" size="sm">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
                   <Bell className="h-4 w-4 mr-2" />
-                  Bildirimler
+                  Notifications
                 </Button>
               </Link>
               <Link to="/profile">
-                <Button variant="outline" size="sm">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
                   <User className="h-4 w-4 mr-2" />
-                  Profil
+                  Profile
                 </Button>
               </Link>
-              <Button variant="outline" size="sm">
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
                 <Settings className="h-4 w-4 mr-2" />
-                Ayarlar
+                Settings
               </Button>
-              <Button variant="outline" size="sm" onClick={handleLogout}>
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="text-gray-300 hover:text-white hover:bg-white/10">
                 <LogOut className="h-4 w-4 mr-2" />
-                Çıkış
+                Logout
               </Button>
             </div>
           </div>
@@ -71,50 +70,50 @@ const Dashboard = () => {
         <SystemStatus />
         
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-          <p className="text-gray-600">
-            Hoş geldin {user?.email}! GAGENT AI asistanınızla çalışmaya başlayın
+          <h1 className="text-4xl font-bold mb-2 gradient-text">Dashboard</h1>
+          <p className="text-gray-300 text-lg">
+            Welcome {user?.email}! Start working with your GAGENT AI assistant
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="p-6">
+          <Card className="glass-effect p-6 border-white/10 hover:border-white/20 transition-all-smooth card-hover">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Kalan Token</p>
-                <p className="text-3xl font-bold">{tokens?.balance?.toLocaleString() || '0'}</p>
+                <p className="text-sm text-gray-400">Remaining Tokens</p>
+                <p className="text-3xl font-bold text-white">{tokens?.balance?.toLocaleString() || '0'}</p>
                 {(tokens?.balance || 0) < 100 && (
-                  <Link to="/pricing" className="text-xs text-red-600 hover:underline">
-                    Token ekle →
+                  <Link to="/pricing" className="text-xs text-red-400 hover:text-red-300 hover:underline">
+                    Add tokens →
                   </Link>
                 )}
               </div>
-              <div className="gradient-primary p-3 rounded-lg">
+              <div className="gradient-primary p-3 rounded-lg animate-glow">
                 <Brain className="h-6 w-6 text-white" />
               </div>
             </div>
           </Card>
           
-          <Card className="p-6">
+          <Card className="glass-effect p-6 border-white/10 hover:border-white/20 transition-all-smooth card-hover">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Toplam Kullanılan</p>
-                <p className="text-3xl font-bold">{tokens?.total_used?.toLocaleString() || '0'}</p>
+                <p className="text-sm text-gray-400">Total Used</p>
+                <p className="text-3xl font-bold text-white">{tokens?.total_used?.toLocaleString() || '0'}</p>
               </div>
-              <div className="gradient-primary p-3 rounded-lg">
+              <div className="gradient-primary p-3 rounded-lg animate-glow">
                 <MessageSquare className="h-6 w-6 text-white" />
               </div>
             </div>
           </Card>
           
-          <Card className="p-6">
+          <Card className="glass-effect p-6 border-white/10 hover:border-white/20 transition-all-smooth card-hover">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Toplam Satın Alınan</p>
-                <p className="text-3xl font-bold">{tokens?.total_purchased?.toLocaleString() || '0'}</p>
+                <p className="text-sm text-gray-400">Total Purchased</p>
+                <p className="text-3xl font-bold text-white">{tokens?.total_purchased?.toLocaleString() || '0'}</p>
               </div>
-              <div className="gradient-primary p-3 rounded-lg">
+              <div className="gradient-primary p-3 rounded-lg animate-glow">
                 <Upload className="h-6 w-6 text-white" />
               </div>
             </div>
@@ -122,43 +121,43 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <Card className="p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Hızlı Erişim</h2>
+        <Card className="glass-effect p-6 mb-8 border-white/10">
+          <h2 className="text-xl font-semibold mb-4 text-white">Quick Access</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Link to="/tokens">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <Brain className="h-5 w-5 mr-3" />
-                Token Yönetimi
+                Token Management
               </Button>
             </Link>
             <Link to="/history">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <History className="h-5 w-5 mr-3" />
-                Geçmiş
+                History
               </Button>
             </Link>
             <Link to="/billing">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <CreditCard className="h-5 w-5 mr-3" />
-                Faturalama
+                Billing
               </Button>
             </Link>
             <Link to="/security">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <Shield className="h-5 w-5 mr-3" />
-                Güvenlik
+                Security
               </Button>
             </Link>
             <Link to="/referral">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <Users className="h-5 w-5 mr-3" />
-                Referans
+                Referral
               </Button>
             </Link>
             <Link to="/notifications">
-              <Button variant="outline" className="w-full justify-start h-12">
+              <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                 <Bell className="h-5 w-5 mr-3" />
-                Bildirimler
+                Notifications
               </Button>
             </Link>
           </div>
@@ -167,65 +166,65 @@ const Dashboard = () => {
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-8">
           {/* AI Chat Section */}
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
+          <Card className="glass-effect p-6 border-white/10">
+            <h2 className="text-xl font-semibold mb-4 flex items-center text-white">
               <MessageSquare className="h-5 w-5 mr-2" />
-              AI Sohbet
+              AI Chat
             </h2>
-            <div className="bg-gray-50 rounded-lg p-4 h-64 mb-4 overflow-y-auto">
-              <p className="text-gray-600 text-center mt-20">
-                AI asistanınızla sohbete başlayın...
+            <div className="bg-gray-800/50 rounded-lg p-4 h-64 mb-4 overflow-y-auto border border-white/10">
+              <p className="text-gray-400 text-center mt-20">
+                Start chatting with your AI assistant...
               </p>
             </div>
             <div className="flex space-x-2">
               <input 
                 type="text" 
-                placeholder="Mesajınızı yazın..."
-                className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Type your message..."
+                className="flex-1 px-3 py-2 bg-gray-800/50 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
               />
               <Button 
-                className="gradient-primary text-white border-0"
+                className="gradient-primary text-white border-0 hover:opacity-90"
                 onClick={handleSendMessage}
                 disabled={!tokens || tokens.balance < 10}
               >
-                Gönder
+                Send
               </Button>
             </div>
             {tokens && tokens.balance < 10 && (
-              <p className="text-xs text-red-600 mt-2">
-                Mesaj göndermek için en az 10 token gerekli. 
-                <Link to="/pricing" className="underline ml-1">Token satın al</Link>
+              <p className="text-xs text-red-400 mt-2">
+                At least 10 tokens required to send a message. 
+                <Link to="/pricing" className="underline ml-1 hover:text-red-300">Buy tokens</Link>
               </p>
             )}
           </Card>
 
           {/* File Management */}
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
+          <Card className="glass-effect p-6 border-white/10">
+            <h2 className="text-xl font-semibold mb-4 flex items-center text-white">
               <Upload className="h-5 w-5 mr-2" />
-              Dosya Yönetimi
+              File Management
             </h2>
             
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-4">
+            <div className="border-2 border-dashed border-white/20 rounded-lg p-8 text-center mb-4 hover:border-white/30 transition-colors">
               <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600 mb-2">Dosyalarınızı sürükleyin veya seçin</p>
-              <Button variant="outline">
-                Dosya Seç
+              <p className="text-gray-300 mb-2">Drag your files here or select them</p>
+              <Button variant="outline" className="border-white/20 text-gray-300 hover:text-white hover:bg-white/10">
+                Select Files
               </Button>
             </div>
 
             <div className="space-y-2">
-              <h3 className="font-medium">Son Yüklenen Dosyalar</h3>
+              <h3 className="font-medium text-white">Recently Uploaded Files</h3>
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                  <span className="text-sm">document.pdf</span>
-                  <Button size="sm" variant="outline">
+                <div className="flex items-center justify-between p-2 bg-gray-800/30 rounded border border-white/10">
+                  <span className="text-sm text-gray-300">document.pdf</span>
+                  <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                  <span className="text-sm">data.xlsx</span>
-                  <Button size="sm" variant="outline">
+                <div className="flex items-center justify-between p-2 bg-gray-800/30 rounded border border-white/10">
+                  <span className="text-sm text-gray-300">data.xlsx</span>
+                  <Button size="sm" variant="ghost" className="text-gray-400 hover:text-white">
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>
