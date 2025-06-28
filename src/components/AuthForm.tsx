@@ -65,16 +65,16 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-8 glass-effect border-white/10 animate-slide-in-up">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="gradient-primary p-3 rounded-lg">
+            <div className="gradient-primary p-3 rounded-lg animate-glow">
               <Brain className="h-8 w-8 text-white" />
             </div>
           </div>
           <h1 className="text-2xl font-bold gradient-text">GAGENT</h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-300 mt-2">
             {isLogin ? 'Hesabınıza giriş yapın' : 'Yeni hesap oluşturun'}
           </p>
         </div>
@@ -88,7 +88,7 @@ const AuthForm = () => {
                 placeholder="Ad Soyad"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
                 required={!isLogin}
               />
             </div>
@@ -101,7 +101,7 @@ const AuthForm = () => {
               placeholder="E-posta"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
               required
             />
           </div>
@@ -113,14 +113,14 @@ const AuthForm = () => {
               placeholder="Şifre"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10"
+              className="pl-10 bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
               required
             />
           </div>
 
           <Button 
             type="submit" 
-            className="w-full gradient-primary text-white border-0"
+            className="w-full gradient-primary text-white border-0 hover:opacity-90 transition-opacity"
             disabled={loading}
           >
             {loading ? 'Yükleniyor...' : (isLogin ? 'Giriş Yap' : 'Kayıt Ol')}
@@ -131,7 +131,7 @@ const AuthForm = () => {
           <button
             type="button"
             onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-600 hover:underline"
+            className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
           >
             {isLogin 
               ? 'Hesabınız yok mu? Kayıt olun' 
