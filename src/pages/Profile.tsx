@@ -1,36 +1,30 @@
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Brain, User, Mail, Phone, Calendar } from "lucide-react";
-import { useState } from "react";
+import { Brain, User, Save, Edit, Mail, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Profile = () => {
-  const [profileData, setProfileData] = useState({
-    name: "Kullanıcı Adı",
-    email: "kullanici@email.com",
-    phone: "+90 555 123 4567",
-    joinDate: "15 Ocak 2024"
+  const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+    joinDate: "2024-01-15",
+    avatar: ""
   });
 
-  const [isEditing, setIsEditing] = useState(false);
-
   const handleSave = () => {
-    console.log("Profile updated:", profileData);
     setIsEditing(false);
-    // Profile update logic will be implemented with Supabase
-  };
-
-  const handleChange = (field: string, value: string) => {
-    setProfileData(prev => ({ ...prev, [field]: value }));
+    console.log("Profile updated:", profile);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -41,8 +35,8 @@ const Profile = () => {
             </div>
             
             <Link to="/dashboard">
-              <Button variant="outline">
-                Dashboard'a Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Dashboard
               </Button>
             </Link>
           </div>
@@ -52,129 +46,104 @@ const Profile = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Profil Ayarları</h1>
-            <p className="text-gray-600">Hesap bilgilerinizi yönetin</p>
+            <h1 className="text-4xl font-bold mb-2 gradient-text">Profile Settings</h1>
+            <p className="text-gray-300 text-lg">Manage your account information</p>
           </div>
 
-          <Card className="p-8">
-            {/* Profile Avatar */}
-            <div className="flex items-center space-x-6 mb-8">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <User className="h-10 w-10 text-white" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold">{profileData.name}</h2>
-                <p className="text-gray-600">{profileData.email}</p>
-                <Button variant="outline" size="sm" className="mt-2">
-                  Fotoğraf Değiştir
-                </Button>
-              </div>
+          <Card className="p-8 glass-effect border-white/10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-semibold text-white flex items-center">
+                <User className="h-6 w-6 mr-2" />
+                Personal Information
+              </h2>
+              <Button
+                variant="ghost"
+                onClick={() => setIsEditing(!isEditing)}
+                className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10"
+              >
+                <Edit className="h-4 w-4 mr-2" />
+                {isEditing ? "Cancel" : "Edit"}
+              </Button>
             </div>
 
-            {/* Profile Form */}
             <div className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Ad Soyad</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="name"
-                      value={profileData.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
-                      disabled={!isEditing}
-                      className="pl-10"
-                    />
-                  </div>
+              {/* Avatar */}
+              <div className="flex items-center space-x-4">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <User className="h-10 w-10 text-white" />
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">E-posta</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      value={profileData.email}
-                      onChange={(e) => handleChange("email", e.target.value)}
-                      disabled={!isEditing}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Telefon</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="phone"
-                      value={profileData.phone}
-                      onChange={(e) => handleChange("phone", e.target.value)}
-                      disabled={!isEditing}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="joinDate">Üyelik Tarihi</Label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      id="joinDate"
-                      value={profileData.joinDate}
-                      disabled
-                      className="pl-10 bg-gray-50"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex space-x-4 pt-6">
-                {!isEditing ? (
-                  <Button 
-                    onClick={() => setIsEditing(true)}
-                    className="gradient-primary text-white border-0"
-                  >
-                    Düzenle
+                {isEditing && (
+                  <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                    Change Avatar
                   </Button>
-                ) : (
-                  <>
-                    <Button 
-                      onClick={handleSave}
-                      className="gradient-primary text-white border-0"
-                    >
-                      Kaydet
-                    </Button>
-                    <Button 
-                      variant="outline"
-                      onClick={() => setIsEditing(false)}
-                    >
-                      İptal
-                    </Button>
-                  </>
                 )}
               </div>
-            </div>
-          </Card>
 
-          {/* Account Settings */}
-          <Card className="p-6 mt-6">
-            <h3 className="text-lg font-semibold mb-4">Hesap Ayarları</h3>
-            <div className="space-y-4">
-              <Button variant="outline" className="w-full justify-start">
-                Şifre Değiştir
-              </Button>
-              <Button variant="outline" className="w-full justify-start">
-                İki Faktörlü Doğrulama
-              </Button>
-              <Button variant="destructive" className="w-full justify-start">
-                Hesabı Sil
-              </Button>
+              {/* Name */}
+              <div className="space-y-2">
+                <Label className="text-gray-300">Full Name</Label>
+                {isEditing ? (
+                  <Input
+                    value={profile.name}
+                    onChange={(e) => setProfile({...profile, name: e.target.value})}
+                    className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
+                  />
+                ) : (
+                  <div className="p-3 bg-gray-800/30 rounded-lg border border-white/10">
+                    <span className="text-white">{profile.name}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="space-y-2">
+                <Label className="text-gray-300 flex items-center">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email Address
+                </Label>
+                {isEditing ? (
+                  <Input
+                    type="email"
+                    value={profile.email}
+                    onChange={(e) => setProfile({...profile, email: e.target.value})}
+                    className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
+                  />
+                ) : (
+                  <div className="p-3 bg-gray-800/30 rounded-lg border border-white/10">
+                    <span className="text-white">{profile.email}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Join Date */}
+              <div className="space-y-2">
+                <Label className="text-gray-300 flex items-center">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Member Since
+                </Label>
+                <div className="p-3 bg-gray-800/30 rounded-lg border border-white/10">
+                  <span className="text-white">{new Date(profile.joinDate).toLocaleDateString()}</span>
+                </div>
+              </div>
+
+              {isEditing && (
+                <div className="flex space-x-4 pt-4">
+                  <Button
+                    onClick={handleSave}
+                    className="gradient-primary text-white border-0 hover:opacity-90"
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsEditing(false)}
+                    className="border border-white/20 text-gray-300 hover:text-white hover:bg-white/10"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
             </div>
           </Card>
         </div>

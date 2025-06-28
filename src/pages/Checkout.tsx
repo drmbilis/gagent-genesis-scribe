@@ -21,9 +21,9 @@ const Checkout = () => {
   });
 
   const packages = {
-    starter: { name: 'Başlangıç', tokens: 500, price: 9.99 },
-    pro: { name: 'Profesyonel', tokens: 2500, price: 29.99 },
-    enterprise: { name: 'Kurumsal', tokens: 10000, price: 99.99 }
+    starter: { name: 'Starter', tokens: 500, price: 9.99 },
+    pro: { name: 'Professional', tokens: 2500, price: 29.99 },
+    enterprise: { name: 'Enterprise', tokens: 10000, price: 99.99 }
   };
 
   const selectedPackage = packageId ? packages[packageId as keyof typeof packages] : null;
@@ -46,8 +46,8 @@ const Checkout = () => {
     // Simulate payment processing
     setTimeout(() => {
       toast({
-        title: "Ödeme Başarılı!",
-        description: `${selectedPackage?.tokens} token hesabınıza eklendi.`,
+        title: "Payment Successful!",
+        description: `${selectedPackage?.tokens} tokens have been added to your account.`,
       });
       navigate('/payment-success');
     }, 2000);
@@ -58,9 +58,9 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2">
@@ -71,8 +71,8 @@ const Checkout = () => {
             </Link>
             
             <Link to="/pricing">
-              <Button variant="outline">
-                Geri Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Pricing
               </Button>
             </Link>
           </div>
@@ -82,73 +82,75 @@ const Checkout = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">Ödeme</h1>
-            <p className="text-gray-600">Güvenli ödeme ile token satın alın</p>
+            <h1 className="text-3xl font-bold mb-2 gradient-text">Checkout</h1>
+            <p className="text-gray-300">Secure payment to purchase tokens</p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Order Summary */}
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Sipariş Özeti</h2>
+            <Card className="p-6 glass-effect border-white/10">
+              <h2 className="text-xl font-semibold mb-4 text-white">Order Summary</h2>
               
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium">{selectedPackage.name} Paketi</span>
-                  <span>${selectedPackage.price}</span>
+                  <span className="font-medium text-gray-300">{selectedPackage.name} Package</span>
+                  <span className="text-white">${selectedPackage.price}</span>
                 </div>
                 
-                <div className="flex justify-between items-center text-sm text-gray-600">
-                  <span>{selectedPackage.tokens.toLocaleString()} Token</span>
+                <div className="flex justify-between items-center text-sm text-gray-400">
+                  <span>{selectedPackage.tokens.toLocaleString()} Tokens</span>
                 </div>
                 
-                <hr />
+                <hr className="border-white/20" />
                 
                 <div className="flex justify-between items-center font-semibold text-lg">
-                  <span>Toplam</span>
-                  <span>${selectedPackage.price}</span>
+                  <span className="text-white">Total</span>
+                  <span className="text-white">${selectedPackage.price}</span>
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-green-50 rounded-lg">
+              <div className="mt-6 p-4 bg-green-500/20 rounded-lg border border-green-500/30">
                 <div className="flex items-center space-x-2">
-                  <Shield className="h-5 w-5 text-green-600" />
-                  <span className="text-sm text-green-800">
-                    256-bit SSL ile güvenli ödeme
+                  <Shield className="h-5 w-5 text-green-400" />
+                  <span className="text-sm text-green-300">
+                    Secure payment with 256-bit SSL
                   </span>
                 </div>
               </div>
             </Card>
 
             {/* Payment Form */}
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <Card className="p-6 glass-effect border-white/10">
+              <h2 className="text-xl font-semibold mb-4 flex items-center text-white">
                 <CreditCard className="h-5 w-5 mr-2" />
-                Ödeme Bilgileri
+                Payment Information
               </h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Kart Sahibinin Adı
+                  <label className="block text-sm font-medium mb-1 text-gray-300">
+                    Cardholder Name
                   </label>
                   <Input
                     name="cardholderName"
                     placeholder="John Doe"
                     value={formData.cardholderName}
                     onChange={handleInputChange}
+                    className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Kart Numarası
+                  <label className="block text-sm font-medium mb-1 text-gray-300">
+                    Card Number
                   </label>
                   <Input
                     name="cardNumber"
                     placeholder="1234 5678 9012 3456"
                     value={formData.cardNumber}
                     onChange={handleInputChange}
+                    className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
                     maxLength={19}
                     required
                   />
@@ -156,21 +158,22 @@ const Checkout = () => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">
-                      Son Kullanma
+                    <label className="block text-sm font-medium mb-1 text-gray-300">
+                      Expiry Date
                     </label>
                     <Input
                       name="expiryDate"
                       placeholder="MM/YY"
                       value={formData.expiryDate}
                       onChange={handleInputChange}
+                      className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
                       maxLength={5}
                       required
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium mb-1">
+                    <label className="block text-sm font-medium mb-1 text-gray-300">
                       CVV
                     </label>
                     <Input
@@ -178,6 +181,7 @@ const Checkout = () => {
                       placeholder="123"
                       value={formData.cvv}
                       onChange={handleInputChange}
+                      className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
                       maxLength={3}
                       required
                     />
@@ -186,15 +190,15 @@ const Checkout = () => {
 
                 <Button 
                   type="submit" 
-                  className="w-full gradient-primary text-white border-0 mt-6"
+                  className="w-full gradient-primary text-white border-0 mt-6 hover:opacity-90 transition-opacity"
                   disabled={loading}
                 >
-                  {loading ? 'İşleniyor...' : `$${selectedPackage.price} Öde`}
+                  {loading ? 'Processing...' : `Pay $${selectedPackage.price}`}
                 </Button>
               </form>
 
-              <p className="text-xs text-gray-500 mt-4 text-center">
-                Ödeme yaparak hizmet şartlarını kabul etmiş olursunuz.
+              <p className="text-xs text-gray-400 mt-4 text-center">
+                By making payment, you agree to our terms of service.
               </p>
             </Card>
           </div>

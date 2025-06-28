@@ -1,73 +1,49 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Brain, MessageSquare, Upload, Download, Clock, Filter } from "lucide-react";
-import { useState } from "react";
+import { Brain, History as HistoryIcon, MessageSquare, Download, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const History = () => {
-  const [chatHistory] = useState([
+  const chatHistory = [
     {
       id: 1,
-      prompt: "Pazarlama stratejisi için bir metin yaz",
-      response: "Başarılı bir pazarlama stratejisi...",
-      tokens: 150,
-      date: "2024-01-15 14:30",
-      status: "completed"
+      title: "Marketing Strategy Discussion",
+      date: "2024-01-20",
+      messages: 15,
+      tokens: 120,
+      type: "chat"
     },
     {
       id: 2,
-      prompt: "E-ticaret sitesi için ürün açıklaması",
-      response: "Bu ürün modern tasarım ile...",
+      title: "Code Review Session",
+      date: "2024-01-19",
+      messages: 8,
+      tokens: 85,
+      type: "chat"
+    },
+    {
+      id: 3,
+      title: "Document Analysis",
+      date: "2024-01-18",
+      messages: 12,
       tokens: 200,
-      date: "2024-01-15 13:15",
-      status: "completed"
-    }
-  ]);
-
-  const [fileHistory] = useState([
-    {
-      id: 1,
-      fileName: "rapor_2024.pdf",
-      fileSize: "2.5 MB",
-      action: "upload",
-      date: "2024-01-15 14:25",
-      status: "success"
+      type: "file"
     },
     {
-      id: 2,
-      fileName: "analiz_sonucu.docx",
-      fileSize: "1.8 MB", 
-      action: "download",
-      date: "2024-01-15 13:45",
-      status: "success"
+      id: 4,
+      title: "Creative Writing Help",
+      date: "2024-01-17",
+      messages: 20,
+      tokens: 150,
+      type: "chat"
     }
-  ]);
-
-  const [tokenHistory] = useState([
-    {
-      id: 1,
-      action: "AI Chat",
-      tokens: -150,
-      remaining: 2350,
-      date: "2024-01-15 14:30"
-    },
-    {
-      id: 2,
-      action: "Token Satın Alma",
-      tokens: +2500,
-      remaining: 2500,
-      date: "2024-01-15 10:00"
-    }
-  ]);
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -78,8 +54,8 @@ const History = () => {
             </div>
             
             <Link to="/dashboard">
-              <Button variant="outline">
-                Dashboard'a Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Dashboard
               </Button>
             </Link>
           </div>
@@ -87,137 +63,72 @@ const History = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2 flex items-center">
-              <Clock className="h-8 w-8 mr-3" />
-              Aktivite Geçmişi
+            <h1 className="text-4xl font-bold mb-2 gradient-text flex items-center">
+              <HistoryIcon className="h-8 w-8 mr-3" />
+              Chat History
             </h1>
-            <p className="text-gray-600">Tüm işlemlerinizi ve geçmişinizi görüntüleyin</p>
+            <p className="text-gray-300 text-lg">View your previous AI interactions</p>
           </div>
 
-          <Tabs defaultValue="chats" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="chats">AI Sohbetler</TabsTrigger>
-              <TabsTrigger value="files">Dosya İşlemleri</TabsTrigger>
-              <TabsTrigger value="tokens">Token Geçmişi</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="chats">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold flex items-center">
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    AI Chat Geçmişi
-                  </h2>
-                  <Button variant="outline" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtrele
-                  </Button>
-                </div>
-                
-                <div className="space-y-4">
-                  {chatHistory.map((chat) => (
-                    <div key={chat.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-medium">{chat.prompt}</h3>
-                        <Badge variant="secondary">{chat.tokens} token</Badge>
+          <div className="space-y-4">
+            {chatHistory.map((session) => (
+              <Card key={session.id} className="p-6 glass-effect border-white/10 hover:border-white/20 transition-all-smooth card-hover">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <MessageSquare className="h-5 w-5 text-blue-400" />
+                      <h3 className="font-semibold text-white text-lg">{session.title}</h3>
+                    </div>
+                    
+                    <div className="flex items-center space-x-6 text-sm text-gray-400">
+                      <div className="flex items-center space-x-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>{new Date(session.date).toLocaleDateString()}</span>
                       </div>
-                      <p className="text-gray-600 text-sm mb-2 line-clamp-2">{chat.response}</p>
-                      <div className="flex justify-between items-center text-xs text-gray-500">
-                        <span>{chat.date}</span>
-                        <Badge variant="outline" className="text-green-600">Tamamlandı</Badge>
+                      <div>
+                        <span>{session.messages} messages</span>
+                      </div>
+                      <div>
+                        <span>{session.tokens} tokens used</span>
                       </div>
                     </div>
-                  ))}
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-gray-300 hover:text-white hover:bg-white/10"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Export
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="gradient-primary text-white border-0 hover:opacity-90"
+                    >
+                      View Details
+                    </Button>
+                  </div>
                 </div>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="files">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold flex items-center">
-                    <Upload className="h-5 w-5 mr-2" />
-                    Dosya İşlem Geçmişi
-                  </h2>
-                  <Button variant="outline" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtrele
+            ))}
+            
+            {chatHistory.length === 0 && (
+              <Card className="p-12 glass-effect border-white/10 text-center">
+                <HistoryIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">No chat history</h3>
+                <p className="text-gray-400">Start chatting with AI to see your history here</p>
+                <Link to="/dashboard" className="mt-4 inline-block">
+                  <Button className="gradient-primary text-white border-0 hover:opacity-90">
+                    Start Chatting
                   </Button>
-                </div>
-
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Dosya Adı</TableHead>
-                      <TableHead>Boyut</TableHead>
-                      <TableHead>İşlem</TableHead>
-                      <TableHead>Tarih</TableHead>
-                      <TableHead>Durum</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {fileHistory.map((file) => (
-                      <TableRow key={file.id}>
-                        <TableCell className="font-medium">{file.fileName}</TableCell>
-                        <TableCell>{file.fileSize}</TableCell>
-                        <TableCell>
-                          <Badge variant={file.action === 'upload' ? 'default' : 'secondary'}>
-                            {file.action === 'upload' ? 'Yükleme' : 'İndirme'}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{file.date}</TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="text-green-600">Başarılı</Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                </Link>
               </Card>
-            </TabsContent>
-
-            <TabsContent value="tokens">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold flex items-center">
-                    <Brain className="h-5 w-5 mr-2" />
-                    Token Kullanım Geçmişi
-                  </h2>
-                  <Button variant="outline" size="sm">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtrele
-                  </Button>
-                </div>
-
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>İşlem</TableHead>
-                      <TableHead>Token Değişimi</TableHead>
-                      <TableHead>Kalan Token</TableHead>
-                      <TableHead>Tarih</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {tokenHistory.map((token) => (
-                      <TableRow key={token.id}>
-                        <TableCell className="font-medium">{token.action}</TableCell>
-                        <TableCell>
-                          <span className={token.tokens > 0 ? 'text-green-600' : 'text-red-600'}>
-                            {token.tokens > 0 ? '+' : ''}{token.tokens}
-                          </span>
-                        </TableCell>
-                        <TableCell>{token.remaining.toLocaleString()}</TableCell>
-                        <TableCell>{token.date}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            )}
+          </div>
         </div>
       </div>
     </div>

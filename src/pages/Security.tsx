@@ -1,63 +1,33 @@
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Brain, Shield, Smartphone, Monitor, MapPin, Calendar, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { Brain, Shield, Key, Eye, EyeOff, Smartphone, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Security = () => {
-  const [twoFAEnabled, setTwoFAEnabled] = useState(false);
-  const [activeSessions] = useState([
-    {
-      id: 1,
-      device: "Chrome - Windows",
-      location: "İstanbul, Türkiye",
-      lastActive: "Şimdi",
-      ip: "192.168.1.1",
-      current: true
-    },
-    {
-      id: 2,
-      device: "Safari - iPhone",
-      location: "İstanbul, Türkiye", 
-      lastActive: "2 saat önce",
-      ip: "192.168.1.45",
-      current: false
-    }
-  ]);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
 
-  const [loginHistory] = useState([
-    {
-      id: 1,
-      date: "2024-01-15 14:30",
-      location: "İstanbul, Türkiye",
-      device: "Chrome - Windows",
-      status: "success"
-    },
-    {
-      id: 2,
-      date: "2024-01-15 08:15",
-      location: "İstanbul, Türkiye",
-      device: "Safari - iPhone", 
-      status: "success"
-    },
-    {
-      id: 3,
-      date: "2024-01-14 22:45",
-      location: "Bilinmeyen Konum",
-      device: "Firefox - Linux",
-      status: "failed"
-    }
-  ]);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+
+  const handlePasswordChange = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Password change requested");
+    // Password change logic
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -68,8 +38,8 @@ const Security = () => {
             </div>
             
             <Link to="/dashboard">
-              <Button variant="outline">
-                Dashboard'a Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Dashboard
               </Button>
             </Link>
           </div>
@@ -77,160 +47,141 @@ const Security = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2 flex items-center">
+            <h1 className="text-4xl font-bold mb-2 gradient-text flex items-center">
               <Shield className="h-8 w-8 mr-3" />
-              Güvenlik Ayarları
+              Security Settings
             </h1>
-            <p className="text-gray-600">Hesap güvenliğinizi yönetin</p>
+            <p className="text-gray-300 text-lg">Protect your account with advanced security features</p>
           </div>
 
-          {/* Password Change */}
-          <Card className="p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Şifre Değiştir</h2>
-            <div className="space-y-4 max-w-md">
-              <div className="space-y-2">
-                <Label htmlFor="current-password">Mevcut Şifre</Label>
-                <Input id="current-password" type="password" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="new-password">Yeni Şifre</Label>
-                <Input id="new-password" type="password" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password">Yeni Şifre Tekrar</Label>
-                <Input id="confirm-password" type="password" />
-              </div>
-              <Button className="gradient-primary text-white border-0">
-                Şifreyi Güncelle
-              </Button>
-            </div>
-          </Card>
-
-          {/* Two-Factor Authentication */}
-          <Card className="p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-xl font-semibold flex items-center">
-                  <Smartphone className="h-5 w-5 mr-2" />
-                  İki Faktörlü Doğrulama (2FA)
-                </h2>
-                <p className="text-gray-600">Hesabınızı ekstra güvenlik katmanı ile koruyun</p>
-              </div>
-              <Badge variant={twoFAEnabled ? "default" : "secondary"}>
-                {twoFAEnabled ? "Aktif" : "Pasif"}
-              </Badge>
-            </div>
-            
-            {!twoFAEnabled ? (
-              <div className="space-y-4">
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600" />
-                    <p className="font-medium text-yellow-800">2FA Önerilir</p>
+          <div className="space-y-6">
+            {/* Password Change */}
+            <Card className="p-6 glass-effect border-white/10">
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <Key className="h-5 w-5 mr-2" />
+                Change Password
+              </h2>
+              
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-gray-300">Current Password</Label>
+                  <div className="relative">
+                    <Input
+                      type={showCurrentPassword ? "text" : "password"}
+                      value={passwordForm.currentPassword}
+                      onChange={(e) => setPasswordForm({...passwordForm, currentPassword: e.target.value})}
+                      className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 pr-10"
+                      placeholder="Enter current password"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    >
+                      {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
                   </div>
-                  <p className="text-sm text-yellow-700">
-                    Hesap güvenliği için iki faktörlü doğrulamayı etkinleştirmenizi öneriyoruz.
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-gray-300">New Password</Label>
+                  <div className="relative">
+                    <Input
+                      type={showNewPassword ? "text" : "password"}
+                      value={passwordForm.newPassword}
+                      onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})}
+                      className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 pr-10"
+                      placeholder="Enter new password"
+                    />
+                    <button
+                      type="button"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                    >
+                      {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="text-gray-300">Confirm New Password</Label>
+                  <Input
+                    type="password"
+                    value={passwordForm.confirmPassword}
+                    onChange={(e) => setPasswordForm({...passwordForm, confirmPassword: e.target.value})}
+                    className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+                
+                <Button type="submit" className="gradient-primary text-white border-0 hover:opacity-90">
+                  Update Password
+                </Button>
+              </form>
+            </Card>
+
+            {/* Two-Factor Authentication */}
+            <Card className="p-6 glass-effect border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-white flex items-center">
+                    <Smartphone className="h-5 w-5 mr-2" />
+                    Two-Factor Authentication
+                  </h2>
+                  <p className="text-gray-300 text-sm mt-1">
+                    Add an extra layer of security to your account
                   </p>
                 </div>
-                <Button 
-                  onClick={() => setTwoFAEnabled(true)}
-                  className="gradient-primary text-white border-0"
+                <Button
+                  variant={twoFactorEnabled ? "destructive" : "default"}
+                  onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
+                  className={twoFactorEnabled ? "" : "gradient-primary text-white border-0 hover:opacity-90"}
                 >
-                  2FA'yı Etkinleştir
+                  {twoFactorEnabled ? "Disable" : "Enable"}
                 </Button>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-green-800">✓ İki faktörlü doğrulama aktif</p>
+              
+              {twoFactorEnabled && (
+                <div className="bg-green-500/20 p-4 rounded-lg border border-green-500/30">
+                  <p className="text-green-300 text-sm">
+                    Two-factor authentication is enabled. Use your authenticator app to generate codes.
+                  </p>
                 </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline">Yedek Kodları Görüntüle</Button>
-                  <Button variant="destructive" onClick={() => setTwoFAEnabled(false)}>
-                    2FA'yı Devre Dışı Bırak
+              )}
+            </Card>
+
+            {/* Active Sessions */}
+            <Card className="p-6 glass-effect border-white/10">
+              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <AlertTriangle className="h-5 w-5 mr-2" />
+                Active Sessions
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg border border-white/10">
+                  <div>
+                    <p className="text-white font-medium">Current Session</p>
+                    <p className="text-sm text-gray-400">Chrome on Windows • 192.168.1.1</p>
+                    <p className="text-xs text-gray-500">Active now</p>
+                  </div>
+                  <span className="text-green-400 text-sm">Current</span>
+                </div>
+                
+                <div className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg border border-white/10">
+                  <div>
+                    <p className="text-white font-medium">Mobile Device</p>
+                    <p className="text-sm text-gray-400">Safari on iPhone • 10.0.0.1</p>
+                    <p className="text-xs text-gray-500">2 hours ago</p>
+                  </div>
+                  <Button size="sm" variant="ghost" className="text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                    Revoke
                   </Button>
                 </div>
               </div>
-            )}
-          </Card>
-
-          {/* Active Sessions */}
-          <Card className="p-6 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold flex items-center">
-                <Monitor className="h-5 w-5 mr-2" />
-                Aktif Oturumlar
-              </h2>
-              <Button variant="destructive">
-                Diğer Oturumları Sonlandır
-              </Button>
-            </div>
-
-            <div className="space-y-4">
-              {activeSessions.map((session) => (
-                <div key={session.id} className={`p-4 border rounded-lg ${session.current ? 'border-green-200 bg-green-50' : ''}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Monitor className="h-5 w-5 text-gray-500" />
-                      <div>
-                        <p className="font-medium">{session.device}</p>
-                        <div className="flex items-center space-x-2 text-sm text-gray-600">
-                          <MapPin className="h-4 w-4" />
-                          <span>{session.location}</span>
-                          <span>•</span>
-                          <span>{session.ip}</span>
-                        </div>
-                        <p className="text-xs text-gray-500">Son aktivite: {session.lastActive}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      {session.current && (
-                        <Badge variant="outline" className="text-green-600">Mevcut</Badge>
-                      )}
-                      {!session.current && (
-                        <Button variant="outline" size="sm">Sonlandır</Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* Login History */}
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-6 flex items-center">
-              <Calendar className="h-5 w-5 mr-2" />
-              Giriş Geçmişi
-            </h2>
-
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Tarih</TableHead>
-                  <TableHead>Konum</TableHead>
-                  <TableHead>Cihaz</TableHead>
-                  <TableHead>Durum</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {loginHistory.map((login) => (
-                  <TableRow key={login.id}>
-                    <TableCell>{login.date}</TableCell>
-                    <TableCell>{login.location}</TableCell>
-                    <TableCell>{login.device}</TableCell>
-                    <TableCell>
-                      <Badge variant={login.status === 'success' ? 'default' : 'destructive'}>
-                        {login.status === 'success' ? 'Başarılı' : 'Başarısız'}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -1,53 +1,41 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Brain, CreditCard, Download, Calendar, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { Brain, CreditCard, Download, Calendar, Receipt } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Billing = () => {
-  const [invoices] = useState([
-    {
-      id: "INV-2024-001",
-      date: "2024-01-15",
-      amount: 49.99,
-      status: "paid",
-      description: "2500 Token Paketi",
-      downloadUrl: "#"
-    },
-    {
-      id: "INV-2024-002", 
-      date: "2024-01-01",
-      amount: 29.99,
-      status: "paid",
-      description: "1000 Token Paketi",
-      downloadUrl: "#"
-    }
-  ]);
-
-  const [paymentMethods] = useState([
+  const billingHistory = [
     {
       id: 1,
-      type: "visa",
-      last4: "4242",
-      expiry: "12/26",
-      isDefault: true
+      date: "2024-01-20",
+      amount: 29.99,
+      tokens: 2500,
+      status: "Paid",
+      invoice: "INV-001"
+    },
+    {
+      id: 2,
+      date: "2024-01-05",
+      amount: 9.99,
+      tokens: 500,
+      status: "Paid",
+      invoice: "INV-002"
+    },
+    {
+      id: 3,
+      date: "2023-12-15",
+      amount: 99.99,
+      tokens: 10000,
+      status: "Paid",
+      invoice: "INV-003"
     }
-  ]);
-
-  const [subscription] = useState({
-    plan: "Pro",
-    status: "active",
-    nextBilling: "2024-02-15",
-    amount: 49.99
-  });
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass-effect border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -58,8 +46,8 @@ const Billing = () => {
             </div>
             
             <Link to="/dashboard">
-              <Button variant="outline">
-                Dashboard'a Dön
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                Back to Dashboard
               </Button>
             </Link>
           </div>
@@ -67,130 +55,90 @@ const Billing = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2 flex items-center">
+            <h1 className="text-4xl font-bold mb-2 gradient-text flex items-center">
               <CreditCard className="h-8 w-8 mr-3" />
-              Faturalama & Abonelik
+              Billing & Invoices
             </h1>
-            <p className="text-gray-600">Ödeme geçmişi ve fatura bilgilerinizi yönetin</p>
+            <p className="text-gray-300 text-lg">Manage your payments and download invoices</p>
           </div>
 
-          {/* Current Subscription */}
-          <Card className="p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Mevcut Abonelik</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+          {/* Current Plan */}
+          <Card className="p-6 mb-8 glass-effect border-white/10">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Plan</p>
-                <p className="text-2xl font-bold">{subscription.plan}</p>
-                <Badge variant="outline" className="text-green-600 mt-1">Aktif</Badge>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Sonraki Ödeme</p>
-                <p className="text-xl font-semibold">{subscription.nextBilling}</p>
-                <p className="text-sm text-gray-500">${subscription.amount}/ay</p>
-              </div>
-              <div className="flex items-end">
-                <Button variant="outline" className="mr-2">
-                  Planı Değiştir
-                </Button>
-                <Button variant="destructive">
-                  Aboneliği İptal Et
-                </Button>
-              </div>
-            </div>
-          </Card>
-
-          {/* Payment Methods */}
-          <Card className="p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Ödeme Yöntemleri</h2>
-              <Button variant="outline">
-                <CreditCard className="h-4 w-4 mr-2" />
-                Yeni Kart Ekle
-              </Button>
-            </div>
-            
-            <div className="space-y-4">
-              {paymentMethods.map((method) => (
-                <div key={method.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
-                      {method.type.toUpperCase()}
-                    </div>
-                    <div>
-                      <p className="font-medium">**** **** **** {method.last4}</p>
-                      <p className="text-sm text-gray-600">Bitiş: {method.expiry}</p>
-                    </div>
-                    {method.isDefault && (
-                      <Badge variant="secondary">Varsayılan</Badge>
-                    )}
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">Düzenle</Button>
-                    <Button variant="outline" size="sm">Sil</Button>
-                  </div>
+                <h2 className="text-xl font-semibold text-white mb-2">Current Usage</h2>
+                <div className="text-gray-300">
+                  <p>Total Spent This Month: <span className="text-white font-semibold">$29.99</span></p>
+                  <p>Tokens Purchased: <span className="text-white font-semibold">2,500</span></p>
                 </div>
-              ))}
+              </div>
+              <Link to="/pricing">
+                <Button className="gradient-primary text-white border-0 hover:opacity-90">
+                  Buy More Tokens
+                </Button>
+              </Link>
             </div>
           </Card>
 
           {/* Billing History */}
-          <Card className="p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold">Fatura Geçmişi</h2>
-              <Button variant="outline">
-                <Download className="h-4 w-4 mr-2" />
-                Tümünü İndir
-              </Button>
+          <Card className="glass-effect border-white/10">
+            <div className="p-6 border-b border-white/10">
+              <h2 className="text-xl font-semibold text-white flex items-center">
+                <Receipt className="h-5 w-5 mr-2" />
+                Billing History
+              </h2>
             </div>
-
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Fatura No</TableHead>
-                  <TableHead>Tarih</TableHead>
-                  <TableHead>Açıklama</TableHead>
-                  <TableHead>Tutar</TableHead>
-                  <TableHead>Durum</TableHead>
-                  <TableHead>İşlem</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoices.map((invoice) => (
-                  <TableRow key={invoice.id}>
-                    <TableCell className="font-medium">{invoice.id}</TableCell>
-                    <TableCell>{invoice.date}</TableCell>
-                    <TableCell>{invoice.description}</TableCell>
-                    <TableCell>${invoice.amount}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-green-600">
-                        {invoice.status === 'paid' ? 'Ödendi' : 'Beklemede'}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4 mr-2" />
-                        İndir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-
-          {/* Billing Alert */}
-          <Card className="p-4 mt-6 border-yellow-200 bg-yellow-50">
-            <div className="flex items-center space-x-3">
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
-              <div>
-                <p className="font-medium text-yellow-800">Ödeme Hatırlatması</p>
-                <p className="text-sm text-yellow-700">
-                  Sonraki ödemeniz 15 Şubat 2024 tarihinde otomatik olarak çekilecektir.
-                </p>
+            
+            <div className="divide-y divide-white/10">
+              {billingHistory.map((transaction) => (
+                <div key={transaction.id} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+                      <CreditCard className="h-5 w-5 text-green-400" />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <span className="font-semibold text-white">{transaction.tokens.toLocaleString()} Tokens</span>
+                        <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full">
+                          {transaction.status}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-4 text-sm text-gray-400">
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>{new Date(transaction.date).toLocaleDateString()}</span>
+                        </div>
+                        <span>Invoice: {transaction.invoice}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-4">
+                    <span className="text-xl font-semibold text-white">
+                      ${transaction.amount}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-gray-300 hover:text-white hover:bg-white/10"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {billingHistory.length === 0 && (
+              <div className="p-12 text-center">
+                <Receipt className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">No billing history</h3>
+                <p className="text-gray-400">Your transactions will appear here</p>
               </div>
-            </div>
+            )}
           </Card>
         </div>
       </div>

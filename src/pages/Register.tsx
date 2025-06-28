@@ -20,7 +20,7 @@ const Register = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Şifreler eşleşmiyor!");
+      alert("Passwords don't match!");
       return;
     }
     console.log("Register attempt:", formData);
@@ -32,8 +32,8 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 dark:from-gray-950 dark:via-purple-950 dark:to-violet-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-8 glass-effect border-white/10 animate-slide-in-up">
         {/* Logo */}
         <div className="flex items-center justify-center space-x-2 mb-8">
           <div className="gradient-primary p-2 rounded-lg animate-glow">
@@ -43,50 +43,53 @@ const Register = () => {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-2">Hesap Oluşturun</h1>
-          <p className="text-gray-600">GAGENT'a katılın ve AI'nın gücünü keşfedin</p>
+          <h1 className="text-2xl font-bold mb-2 text-white">Create Account</h1>
+          <p className="text-gray-300">Join GAGENT and discover the power of AI</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="name">Ad Soyad</Label>
+            <Label htmlFor="name" className="text-gray-300">Full Name</Label>
             <Input
               id="name"
               type="text"
-              placeholder="Adınız ve soyadınız"
+              placeholder="Your full name"
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
+              className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">E-posta</Label>
+            <Label htmlFor="email" className="text-gray-300">Email</Label>
             <Input
               id="email"
               type="email"
-              placeholder="ornek@email.com"
+              placeholder="example@email.com"
               value={formData.email}
               onChange={(e) => handleChange("email", e.target.value)}
+              className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Şifre</Label>
+            <Label htmlFor="password" className="text-gray-300">Password</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="En az 8 karakter"
+                placeholder="At least 8 characters"
                 value={formData.password}
                 onChange={(e) => handleChange("password", e.target.value)}
+                className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 pr-10"
                 required
                 minLength={8}
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -95,19 +98,20 @@ const Register = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Şifre Tekrarı</Label>
+            <Label htmlFor="confirmPassword" className="text-gray-300">Confirm Password</Label>
             <div className="relative">
               <Input
                 id="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder="Şifrenizi tekrar girin"
+                placeholder="Repeat your password"
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange("confirmPassword", e.target.value)}
+                className="bg-gray-800/50 border-white/20 text-white placeholder-gray-400 focus:border-blue-500 pr-10"
                 required
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -115,16 +119,16 @@ const Register = () => {
             </div>
           </div>
 
-          <Button type="submit" className="w-full gradient-primary text-white border-0">
-            Hesap Oluştur
+          <Button type="submit" className="w-full gradient-primary text-white border-0 hover:opacity-90 transition-opacity">
+            Create Account
           </Button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Zaten hesabınız var mı?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline font-medium">
-              Giriş Yapın
+          <p className="text-gray-300">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-400 hover:text-blue-300 hover:underline font-medium">
+              Sign In
             </Link>
           </p>
         </div>
