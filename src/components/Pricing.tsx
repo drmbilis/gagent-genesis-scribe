@@ -3,11 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Star, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Pricing = () => {
+  const { t } = useLanguage();
+
   const plans = [
     {
-      name: "Starter",
+      name: t('starter'),
       price: "Free",
       description: "Perfect for individual use",
       features: [
@@ -18,11 +21,11 @@ const Pricing = () => {
         "Basic analytics"
       ],
       tokens: "500 tokens/month",
-      buttonText: "Start Free",
+      buttonText: t('getStarted'),
       isPopular: false
     },
     {
-      name: "Pro",
+      name: t('pro'),
       price: "$29",
       period: "/month",
       description: "Powerful solution for professionals",
@@ -40,7 +43,7 @@ const Pricing = () => {
       isPopular: true
     },
     {
-      name: "Enterprise",
+      name: t('enterprise'),
       price: "$99",
       period: "/month",
       description: "Enterprise solutions",
@@ -61,68 +64,72 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Pricing</span>
+    <section id="pricing" className="py-32 bg-gray-950/50 backdrop-blur-sm relative">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-bold mb-8 text-white">
+            <span className="gradient-text">{t('pricing')}</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Choose the plan that suits your needs and discover the power of GAGENT. 
-            All plans come with a 30-day money-back guarantee.
+          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            {t('choosePlan')}
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`relative p-8 ${
+              className={`relative p-10 card-hover group border-white/10 bg-gray-900/40 backdrop-blur-sm ${
                 plan.isPopular 
-                  ? 'ring-2 ring-blue-500 scale-105 shadow-2xl' 
-                  : 'hover:scale-105'
-              } transition-all duration-300`}
+                  ? 'ring-2 ring-purple-500 scale-105 shadow-2xl shadow-purple-500/20' 
+                  : ''
+              }`}
             >
               {plan.isPopular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="gradient-primary px-4 py-2 rounded-full text-white text-sm font-medium flex items-center space-x-1">
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
+                  <div className="gradient-primary px-6 py-3 rounded-full text-white text-sm font-bold flex items-center space-x-2 shadow-lg">
                     <Star className="h-4 w-4" />
-                    <span>Most Popular</span>
+                    <span>{t('mostPopular')}</span>
                   </div>
                 </div>
               )}
 
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <div className="mb-2">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  {plan.period && <span className="text-gray-500">{plan.period}</span>}
+              <div className="text-center mb-10">
+                <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-purple-200 transition-colors">
+                  {plan.name}
+                </h3>
+                <div className="mb-4">
+                  <span className="text-5xl font-bold text-white">{plan.price}</span>
+                  {plan.period && <span className="text-gray-400 text-xl">{plan.period}</span>}
                 </div>
-                <p className="text-gray-600">{plan.description}</p>
+                <p className="text-gray-300 text-lg">{plan.description}</p>
               </div>
 
-              <div className="gradient-primary text-white p-3 rounded-lg text-center mb-6">
+              <div className="gradient-primary text-white p-4 rounded-xl text-center mb-8 group-hover:scale-105 transition-all-smooth">
                 <div className="flex items-center justify-center space-x-2">
-                  <Zap className="h-4 w-4" />
-                  <span className="font-medium">{plan.tokens}</span>
+                  <Zap className="h-5 w-5" />
+                  <span className="font-bold text-lg">{plan.tokens}</span>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-4 mb-10">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center space-x-3">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
+                    <Check className="h-5 w-5 text-green-400 flex-shrink-0" />
+                    <span className="text-gray-300 group-hover:text-gray-200 transition-colors">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link to="/auth" className="block">
                 <Button 
-                  className={`w-full py-3 ${
+                  className={`w-full py-4 text-lg font-semibold rounded-xl transition-all-smooth ${
                     plan.isPopular 
-                      ? 'gradient-primary text-white border-0 hover:opacity-90' 
-                      : 'border border-gray-300 hover:bg-gray-50'
+                      ? 'btn-modern gradient-primary text-white border-0 hover:opacity-90 shadow-lg hover:shadow-purple-500/25' 
+                      : 'border-2 border-white/20 text-white hover:bg-white/10 hover:border-purple-400 bg-transparent'
                   }`}
                   variant={plan.isPopular ? "default" : "outline"}
                 >
@@ -134,14 +141,23 @@ const Pricing = () => {
         </div>
 
         {/* Additional Info */}
-        <div className="text-center mt-12 space-y-4">
-          <p className="text-gray-600">
+        <div className="text-center mt-16 space-y-6">
+          <p className="text-gray-300 text-lg">
             All plans come with a 30-day free trial period
           </p>
-          <div className="flex flex-wrap justify-center items-center space-x-8 text-sm text-gray-500">
-            <span>✓ No credit card required</span>
-            <span>✓ Cancel anytime</span>
-            <span>✓ 30-day money-back guarantee</span>
+          <div className="flex flex-wrap justify-center items-center space-x-8 text-gray-400">
+            <span className="flex items-center space-x-2">
+              <Check className="h-4 w-4 text-green-400" />
+              <span>No credit card required</span>
+            </span>
+            <span className="flex items-center space-x-2">
+              <Check className="h-4 w-4 text-green-400" />
+              <span>Cancel anytime</span>
+            </span>
+            <span className="flex items-center space-x-2">
+              <Check className="h-4 w-4 text-green-400" />
+              <span>30-day money-back guarantee</span>
+            </span>
           </div>
         </div>
       </div>

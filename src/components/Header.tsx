@@ -1,19 +1,43 @@
 
 import { Button } from "@/components/ui/button";
-import { Brain, Menu, X } from "lucide-react";
+import { Brain, Menu, X, Globe, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import SystemStatus from "./SystemStatus";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
+  const { isDark, toggleTheme } = useTheme();
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass-effect">
+    <header className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/10">
       <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+        {/* System Status */}
+        <SystemStatus />
+        
+        <div className="flex items-center justify-between mt-2">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="gradient-primary p-2 rounded-lg animate-glow">
+          <Link to="/" className="flex items-center space-x-2 group">
+            <div className="gradient-primary p-2 rounded-xl animate-glow group-hover:scale-110 transition-all-smooth">
               <Brain className="h-6 w-6 text-white" />
             </div>
             <span className="text-2xl font-bold gradient-text">GAGENT</span>
@@ -21,35 +45,88 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Özellikler
-            </a>
-            <a href="#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Fiyatlandırma
-            </a>
-            <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
-              Hakkımızda
+            <button 
+              onClick={() => scrollToSection('features')} 
+              className="nav-link text-gray-300 hover:text-white transition-all-smooth"
+            >
+              {t('features')}
+            </button>
+            <button 
+              onClick={() => scrollToSection('pricing')} 
+              className="nav-link text-gray-300 hover:text-white transition-all-smooth"
+            >
+              {t('pricing')}
+            </button>
+            <Link to="/about" className="nav-link text-gray-300 hover:text-white transition-all-smooth">
+              {t('about')}
             </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
-              İletişim
+            <Link to="/contact" className="nav-link text-gray-300 hover:text-white transition-all-smooth">
+              {t('contact')}
             </Link>
           </nav>
 
-          {/* Desktop Buttons */}
+          {/* Desktop Controls */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login">
-              <Button variant="outline">Giriş Yap</Button>
-            </Link>
-            <Link to="/register">
-              <Button className="gradient-primary text-white border-0 hover:opacity-90">
-                Başlayın
-              </Button>
-            </Link>
+            {/* Language Selector */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
+                  <Globe className="h-4 w-4 mr-2" />
+                  {language.toUpperCase()}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-gray-900/95 border-gray-700 backdrop-blur-lg">
+                <DropdownMenuItem 
+                  onClick={() => setLanguage('en')}
+                  className="text-gray-300 hover:text-white hover:bg-white/10"
+                >
+                  {t('english')}
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setLanguage('tr')}
+                  className="text-gray-300 hover:text-white hover:bg-white/10"
+                >
+                  {t('turkish')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Theme Toggle */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={toggleTheme}
+              className="text-gray-300 hover:text-white hover:bg-white/10"
+            >
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+
+            {/* Auth Buttons */}
+            {user ? (
+              <Link to="/dashboard">
+                <Button className="btn-modern gradient-primary text-white border-0 hover:opacity-90">
+                  {t('dashboard')}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="outline" className="border-white/20 text-gray-300 hover:text-white hover:bg-white/10">
+                    {t('signIn')}
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button className="btn-modern gradient-primary text-white border-0 hover:opacity-90">
+                    {t('getStarted')}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="md:hidden text-gray-300 hover:text-white transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -58,29 +135,79 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 p-4 glass-effect rounded-lg">
+          <div className="md:hidden mt-6 p-6 glass-effect rounded-xl animate-slide-in-up">
             <nav className="flex flex-col space-y-4">
-              <a href="#features" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Özellikler
-              </a>
-              <a href="#pricing" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Fiyatlandırma
-              </a>
-              <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
-                Hakkımızda
+              <button 
+                onClick={() => scrollToSection('features')} 
+                className="text-left text-gray-300 hover:text-white transition-colors py-2"
+              >
+                {t('features')}
+              </button>
+              <button 
+                onClick={() => scrollToSection('pricing')} 
+                className="text-left text-gray-300 hover:text-white transition-colors py-2"
+              >
+                {t('pricing')}
+              </button>
+              <Link 
+                to="/about" 
+                className="text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t('about')}
               </Link>
-              <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
-                İletişim
+              <Link 
+                to="/contact" 
+                className="text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {t('contact')}
               </Link>
-              <div className="flex flex-col space-y-2 pt-4">
-                <Link to="/login">
-                  <Button variant="outline" className="w-full">Giriş Yap</Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="gradient-primary text-white border-0 w-full">
-                    Başlayın
+              
+              {/* Mobile Controls */}
+              <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <div className="flex items-center space-x-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
+                    className="text-gray-300 hover:text-white hover:bg-white/10"
+                  >
+                    <Globe className="h-4 w-4 mr-2" />
+                    {language === 'en' ? 'TR' : 'EN'}
                   </Button>
-                </Link>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={toggleTheme}
+                    className="text-gray-300 hover:text-white hover:bg-white/10"
+                  >
+                    {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="flex flex-col space-y-2 pt-4">
+                {user ? (
+                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button className="w-full btn-modern gradient-primary text-white border-0">
+                      {t('dashboard')}
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button variant="outline" className="w-full border-white/20 text-gray-300 hover:text-white hover:bg-white/10">
+                        {t('signIn')}
+                      </Button>
+                    </Link>
+                    <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Button className="w-full btn-modern gradient-primary text-white border-0">
+                        {t('getStarted')}
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
