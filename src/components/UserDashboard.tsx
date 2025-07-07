@@ -3,376 +3,546 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { 
   Brain, 
   CreditCard, 
-  History, 
   Settings, 
-  Key, 
-  Users,
+  Key,
+  History,
+  Share2,
+  Copy,
   Download,
-  Share,
+  Play,
+  Bookmark,
   Star,
-  TrendingUp,
-  Zap,
+  Users,
+  DollarSign,
   Calendar,
+  MessageSquare,
+  FileText,
+  Zap,
+  TrendingUp,
+  Eye,
   BarChart3
 } from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
 
 const UserDashboard = () => {
-  const [currentPlan, setCurrentPlan] = useState({
+  const [activeTab, setActiveTab] = useState('overview');
+  const [selectedModel, setSelectedModel] = useState('gpt-4');
+  const [promptText, setPromptText] = useState('');
+  
+  // Mock user data
+  const [userPlan] = useState({
     name: 'Pro Plan',
-    tokensLeft: 8500,
-    totalTokens: 10000,
-    expiryDate: '2024-02-15',
+    tokensRemaining: 8500,
+    totalTokens: 15000,
+    validUntil: '2024-02-20',
     price: 29.99
   });
 
   const [recentUsage] = useState([
-    { date: '2024-01-20', service: 'GPT-4', tokens: 1200, cost: 0.024 },
-    { date: '2024-01-19', service: 'Claude-3', tokens: 800, cost: 0.016 },
-    { date: '2024-01-18', service: 'DALL-E 3', tokens: 400, cost: 0.008 }
+    { date: '2024-01-20', prompt: 'Blog yazısı oluştur', tokens: 450, model: 'GPT-4' },
+    { date: '2024-01-19', prompt: 'Kod review yap', tokens: 320, model: 'Claude' },
+    { date: '2024-01-18', prompt: 'E-posta şablonu', tokens: 180, model: 'GPT-3.5' }
   ]);
 
-  const [savedPrompts] = useState([
-    { id: 1, title: 'Blog Yazısı Şablonu', category: 'Content', favorite: true },
-    { id: 2, title: 'SEO Meta Açıklama', category: 'Marketing', favorite: false },
-    { id: 3, title: 'E-posta Yanıtı', category: 'Business', favorite: true }
+  const [promptHistory, setPromptHistory] = useState([
+    { 
+      id: 1, 
+      title: 'Blog Post Generator', 
+      prompt: 'SEO optimized blog post about AI trends...', 
+      model: 'GPT-4', 
+      tokens: 450, 
+      favorite: true,
+      date: '2024-01-20'
+    },
+    { 
+      id: 2, 
+      title: 'Code Review', 
+      prompt: 'Review this React component for best practices...', 
+      model: 'Claude', 
+      tokens: 320, 
+      favorite: false,
+      date: '2024-01-19'
+    }
   ]);
 
-  const [apiKeys] = useState([
-    { id: 1, name: 'Production API', key: 'sk-proj-***', created: '2024-01-15', lastUsed: '2024-01-20' },
-    { id: 2, name: 'Development API', key: 'sk-test-***', created: '2024-01-10', lastUsed: '2024-01-18' }
+  const [apiKeys, setApiKeys] = useState([
+    { id: 1, name: 'Production API', key: 'gag-sk-...abcd1234', created: '2024-01-15', lastUsed: '2024-01-20' },
+    { id: 2, name: 'Development API', key: 'gag-sk-...efgh5678', created: '2024-01-10', lastUsed: '2024-01-18' }
   ]);
 
-  const usagePercentage = (currentPlan.tokensLeft / currentPlan.totalTokens) * 100;
+  const [paymentHistory] = useState([
+    { date: '2024-01-01', amount: 29.99, plan: 'Pro Plan', status: 'Paid', invoice: 'INV-001' },
+    { date: '2023-12-01', amount: 29.99, plan: 'Pro Plan', status: 'Paid', invoice: 'INV-002' }
+  ]);
+
+  const [affiliateStats] = useState({
+    referralLink: 'https://gagent.app/ref/user123',
+    totalReferrals: 12,
+    earnings: 145.80,
+    pendingPayment: 45.60,
+    conversionRate: 8.3
+  });
+
+  const handleRunPrompt = () => {
+    if (!promptText.trim()) return;
+    
+    // Simulate API call
+    console.log('Running prompt:', promptText);
+    console.log('Selected model:', selectedModel);
+    
+    // Add to history
+    const newPrompt = {
+      id: promptHistory.length + 1,
+      title: promptText.substring(0, 30) + '...',
+      prompt: promptText,
+      model: selectedModel,
+      tokens: Math.floor(Math.random() * 500) + 100,
+      favorite: false,
+      date: new Date().toISOString().split('T')[0]
+    };
+    
+    setPromptHistory([newPrompt, ...promptHistory]);
+    setPromptText('');
+  };
+
+  const toggleFavorite = (id) => {
+    setPromptHistory(promptHistory.map(p => 
+      p.id === id ? { ...p, favorite: !p.favorite } : p
+    ));
+  };
+
+  const generateApiKey = () => {
+    const newKey = {
+      id: apiKeys.length + 1,
+      name: `API Key ${apiKeys.length + 1}`,
+      key: `gag-sk-...${Math.random().toString(36).substr(2, 8)}`,
+      created: new Date().toISOString().split('T')[0],
+      lastUsed: 'Never'
+    };
+    setApiKeys([...apiKeys, newKey]);
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
 
   return (
-    <div className="space-y-6">
-      {/* Ana Durum Kartları */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="glass-effect border-white/10">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-white flex items-center space-x-2">
-              <Zap className="h-5 w-5 text-yellow-400" />
-              <span>Kalan Token</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-white mb-2">
-              {currentPlan.tokensLeft.toLocaleString()}
+    <div className="space-y-8">
+      {/* Header Stats */}
+      <div className="grid md:grid-cols-4 gap-6">
+        <Card className="glass-effect p-6 border-white/10">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-400">Mevcut Plan</p>
+              <p className="text-2xl font-bold text-white">{userPlan.name}</p>
+              <p className="text-xs text-blue-400">Geçerli: {userPlan.validUntil}</p>
             </div>
-            <Progress value={usagePercentage} className="h-2 mb-2" />
-            <p className="text-sm text-gray-400">
-              {currentPlan.totalTokens.toLocaleString()} toplam
-            </p>
-          </CardContent>
+            <div className="gradient-primary p-3 rounded-lg">
+              <CreditCard className="h-6 w-6 text-white" />
+            </div>
+          </div>
         </Card>
 
-        <Card className="glass-effect border-white/10">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-white flex items-center space-x-2">
-              <CreditCard className="h-5 w-5 text-blue-400" />
-              <span>Aktif Plan</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-400 mb-2">
-              {currentPlan.name}
+        <Card className="glass-effect p-6 border-white/10">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-400">Kalan Token</p>
+              <p className="text-2xl font-bold text-green-400">{userPlan.tokensRemaining.toLocaleString()}</p>
+              <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
+                <div 
+                  className="bg-green-500 h-2 rounded-full" 
+                  style={{ width: `${(userPlan.tokensRemaining / userPlan.totalTokens) * 100}%` }}
+                ></div>
+              </div>
             </div>
-            <p className="text-sm text-gray-400">
-              ${currentPlan.price}/ay
-            </p>
-            <p className="text-xs text-gray-500">
-              Bitiş: {currentPlan.expiryDate}
-            </p>
-          </CardContent>
+            <div className="gradient-primary p-3 rounded-lg">
+              <Zap className="h-6 w-6 text-white" />
+            </div>
+          </div>
         </Card>
 
-        <Card className="glass-effect border-white/10">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-white flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5 text-green-400" />
-              <span>Aylık Kullanım</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-green-400 mb-2">
-              1,500
+        <Card className="glass-effect p-6 border-white/10">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-400">Bu Ay Kullanım</p>
+              <p className="text-2xl font-bold text-blue-400">6,500</p>
+              <p className="text-xs text-gray-400">Token kullanıldı</p>
             </div>
-            <p className="text-sm text-gray-400">token bu ay</p>
-          </CardContent>
+            <div className="gradient-primary p-3 rounded-lg">
+              <BarChart3 className="h-6 w-6 text-white" />
+            </div>
+          </div>
         </Card>
 
-        <Card className="glass-effect border-white/10">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-white flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5 text-purple-400" />
-              <span>Toplam Maliyet</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-purple-400 mb-2">
-              $4.76
+        <Card className="glass-effect p-6 border-white/10">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-400">Toplam Prompt</p>
+              <p className="text-2xl font-bold text-purple-400">142</p>
+              <p className="text-xs text-gray-400">Bu ay çalıştırıldı</p>
             </div>
-            <p className="text-sm text-gray-400">bu ay</p>
-          </CardContent>
+            <div className="gradient-primary p-3 rounded-lg">
+              <Brain className="h-6 w-6 text-white" />
+            </div>
+          </div>
         </Card>
       </div>
 
-      {/* Ana İçerik Sekmeleri */}
-      <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="bg-gray-800/50">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="bg-gray-800/50 mb-8">
           <TabsTrigger value="overview">Genel Bakış</TabsTrigger>
           <TabsTrigger value="ai-services">AI Servisleri</TabsTrigger>
-          <TabsTrigger value="api">API Erişimi</TabsTrigger>
-          <TabsTrigger value="prompts">Prompt Geçmişi</TabsTrigger>
+          <TabsTrigger value="api-access">API Erişimi</TabsTrigger>
+          <TabsTrigger value="prompt-history">Prompt Geçmişi</TabsTrigger>
           <TabsTrigger value="billing">Ödemeler</TabsTrigger>
           <TabsTrigger value="affiliate">Affiliate</TabsTrigger>
         </TabsList>
 
+        {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Son Kullanımlar */}
-          <Card className="glass-effect border-white/10">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center space-x-2">
-                <History className="h-5 w-5" />
-                <span>Son Kullanımlar</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentUsage.map((usage, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <Brain className="h-5 w-5 text-blue-400" />
-                      <div>
-                        <p className="text-white font-medium">{usage.service}</p>
-                        <p className="text-sm text-gray-400">{usage.date}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-white">{usage.tokens} token</p>
-                      <p className="text-sm text-green-400">${usage.cost}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Kullanım Grafikleri */}
-          <Card className="glass-effect border-white/10">
-            <CardHeader>
-              <CardTitle className="text-white">Haftalık Kullanım</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 bg-gray-800/30 rounded-lg flex items-center justify-center">
-                <p className="text-gray-400">Kullanım grafiği burada görünecek</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="ai-services" className="space-y-6">
-          <Card className="glass-effect border-white/10">
-            <CardHeader>
-              <CardTitle className="text-white">AI Servis Kullanımı</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-800/30 rounded-lg">
-                  <h3 className="text-white font-semibold mb-2">Text Generation</h3>
-                  <p className="text-gray-400 text-sm mb-4">GPT-4, Claude, Mistral modelleri</p>
-                  <Button className="w-full gradient-primary">
-                    <Brain className="h-4 w-4 mr-2" />
-                    Prompt Çalıştır
-                  </Button>
-                </div>
-                <div className="p-4 bg-gray-800/30 rounded-lg">
-                  <h3 className="text-white font-semibold mb-2">Image Generation</h3>
-                  <p className="text-gray-400 text-sm mb-4">DALL-E, Midjourney, Stable Diffusion</p>
-                  <Button className="w-full gradient-primary">
-                    <Brain className="h-4 w-4 mr-2" />
-                    Görsel Oluştur
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="api" className="space-y-6">
-          <Card className="glass-effect border-white/10">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-white flex items-center space-x-2">
-                <Key className="h-5 w-5" />
-                <span>API Anahtarları</span>
-              </CardTitle>
-              <Button className="gradient-primary">
-                Yeni Anahtar Oluştur
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {apiKeys.map((key) => (
-                  <div key={key.id} className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg">
-                    <div>
-                      <p className="text-white font-medium">{key.name}</p>
-                      <p className="text-gray-400 text-sm">{key.key}</p>
-                      <p className="text-gray-500 text-xs">
-                        Oluşturulma: {key.created} | Son kullanım: {key.lastUsed}
-                      </p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="ghost" className="text-gray-400">
-                        Kopyala
-                      </Button>
-                      <Button size="sm" variant="ghost" className="text-red-400">
-                        Sil
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="prompts" className="space-y-6">
-          <Card className="glass-effect border-white/10">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-white">Kayıtlı Promptlar</CardTitle>
-              <Button className="gradient-primary">
-                Yeni Prompt Ekle
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {savedPrompts.map((prompt) => (
-                  <div key={prompt.id} className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      {prompt.favorite && <Star className="h-5 w-5 text-yellow-400" />}
-                      <div>
-                        <p className="text-white font-medium">{prompt.title}</p>
-                        <Badge variant="outline" className="mt-1">
-                          {prompt.category}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="ghost" className="text-gray-400">
-                        <Share className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="ghost" className="text-gray-400">
-                        Çalıştır
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="billing" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Usage Chart */}
             <Card className="glass-effect border-white/10">
               <CardHeader>
-                <CardTitle className="text-white">Plan Yükseltme</CardTitle>
+                <CardTitle className="text-white">Son 7 Gün Kullanım</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="p-4 border border-blue-500 rounded-lg bg-blue-500/10">
-                    <h3 className="text-white font-semibold">Pro Plan</h3>
-                    <p className="text-gray-400">Mevcut planınız</p>
-                    <p className="text-2xl font-bold text-blue-400 mt-2">$29.99/ay</p>
-                  </div>
-                  <div className="p-4 border border-white/20 rounded-lg">
-                    <h3 className="text-white font-semibold">Enterprise Plan</h3>
-                    <p className="text-gray-400">Sınırsız kullanım</p>
-                    <p className="text-2xl font-bold text-white mt-2">$99.99/ay</p>
-                    <Button className="w-full mt-4 gradient-primary">
-                      Yükselt
-                    </Button>
+                <div className="h-48 bg-gray-800/30 rounded-lg p-4">
+                  <div className="space-y-3">
+                    {recentUsage.map((usage, index) => (
+                      <div key={index} className="flex justify-between items-center">
+                        <div>
+                          <p className="text-white text-sm">{usage.prompt}</p>
+                          <p className="text-gray-400 text-xs">{usage.date} - {usage.model}</p>
+                        </div>
+                        <Badge className="bg-blue-500/20 text-blue-400">{usage.tokens} token</Badge>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Quick Actions */}
             <Card className="glass-effect border-white/10">
               <CardHeader>
-                <CardTitle className="text-white">Fatura Geçmişi</CardTitle>
+                <CardTitle className="text-white">Hızlı İşlemler</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
-                    <div>
-                      <p className="text-white">Ocak 2024</p>
-                      <p className="text-gray-400 text-sm">Pro Plan</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-white">$29.99</span>
-                      <Button size="sm" variant="ghost">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
-                    <div>
-                      <p className="text-white">Aralık 2023</p>
-                      <p className="text-gray-400 text-sm">Pro Plan</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-white">$29.99</span>
-                      <Button size="sm" variant="ghost">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
+                  <Button className="w-full justify-start bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
+                    <Brain className="h-4 w-4 mr-2" />
+                    Yeni Prompt Çalıştır
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start border-white/20">
+                    <Key className="h-4 w-4 mr-2" />
+                    API Anahtarı Oluştur
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start border-white/20">
+                    <CreditCard className="h-4 w-4 mr-2" />
+                    Plan Yükselt
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start border-white/20">
+                    <Users className="h-4 w-4 mr-2" />
+                    Arkadaş Davet Et
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
+        {/* AI Services Tab */}
+        <TabsContent value="ai-services" className="space-y-6">
+          <Card className="glass-effect border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white">AI Prompt Studio</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-gray-300 text-sm mb-2 block">Model Seçimi</label>
+                  <select 
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                    className="w-full p-3 bg-gray-800 border border-white/20 rounded-lg text-white"
+                  >
+                    <option value="gpt-4">GPT-4 (Premium - 10 token/request)</option>
+                    <option value="gpt-3.5">GPT-3.5 Turbo (5 token/request)</option>
+                    <option value="claude">Claude (8 token/request)</option>
+                    <option value="deepseek">DeepSeek (3 token/request)</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="text-gray-300 text-sm mb-2 block">Prompt</label>
+                  <Textarea
+                    value={promptText}
+                    onChange={(e) => setPromptText(e.target.value)}
+                    placeholder="AI'ya vereceğiniz görevi buraya yazın..."
+                    className="min-h-32 bg-gray-800 border-white/20 text-white resize-none"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-400">
+                    Tahmini maliyet: ~{Math.ceil(promptText.length / 4)} token
+                  </div>
+                  <Button 
+                    onClick={handleRunPrompt}
+                    disabled={!promptText.trim()}
+                    className="gradient-primary"
+                  >
+                    <Play className="h-4 w-4 mr-2" />
+                    Çalıştır
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* API Access Tab */}
+        <TabsContent value="api-access" className="space-y-6">
+          <Card className="glass-effect border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-white">API Anahtarları</CardTitle>
+              <Button className="gradient-primary" onClick={generateApiKey}>
+                <Key className="h-4 w-4 mr-2" />
+                Yeni Anahtar Oluştur
+              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {apiKeys.map((apiKey) => (
+                  <div key={apiKey.id} className="p-4 bg-gray-800/30 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-white font-medium">{apiKey.name}</p>
+                        <p className="text-gray-400 font-mono text-sm">{apiKey.key}</p>
+                        <p className="text-gray-500 text-xs">
+                          Oluşturulma: {apiKey.created} | Son kullanım: {apiKey.lastUsed}
+                        </p>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => copyToClipboard(apiKey.key)}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-effect border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white">API Kullanım İstatistikleri</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-blue-400">1,245</p>
+                  <p className="text-gray-400 text-sm">Bu ay istek</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-green-400">99.2%</p>
+                  <p className="text-gray-400 text-sm">Başarı oranı</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-purple-400">450ms</p>
+                  <p className="text-gray-400 text-sm">Ortalama süre</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Prompt History Tab */}
+        <TabsContent value="prompt-history" className="space-y-6">
+          <Card className="glass-effect border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-white">Prompt Geçmişi</CardTitle>
+              <div className="flex space-x-2">
+                <Button variant="outline" size="sm">
+                  <Bookmark className="h-4 w-4 mr-2" />
+                  Sadece Favoriler
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Dışa Aktar
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {promptHistory.map((prompt) => (
+                  <div key={prompt.id} className="p-4 bg-gray-800/30 rounded-lg">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h3 className="text-white font-medium">{prompt.title}</h3>
+                          <Badge className="bg-blue-500/20 text-blue-400">{prompt.model}</Badge>
+                          <Badge className="bg-gray-500/20 text-gray-400">{prompt.tokens} token</Badge>
+                        </div>
+                        <p className="text-gray-300 text-sm mb-2">{prompt.prompt}</p>
+                        <p className="text-gray-500 text-xs">{prompt.date}</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          size="sm" 
+                          variant="ghost"
+                          onClick={() => toggleFavorite(prompt.id)}
+                          className={prompt.favorite ? 'text-yellow-400' : 'text-gray-400'}
+                        >
+                          <Star className="h-4 w-4" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-gray-400">
+                          <Play className="h-4 w-4" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-gray-400">
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        <Button size="sm" variant="ghost" className="text-gray-400">
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Billing Tab */}
+        <TabsContent value="billing" className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6">
+            <Card className="glass-effect border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white">Mevcut Plan</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-white">{userPlan.name}</h3>
+                    <p className="text-3xl font-bold text-green-400">${userPlan.price}/ay</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Token Limiti:</span>
+                      <span className="text-white">{userPlan.totalTokens.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Kalan Token:</span>
+                      <span className="text-green-400">{userPlan.tokensRemaining.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Yenileme Tarihi:</span>
+                      <span className="text-white">{userPlan.validUntil}</span>
+                    </div>
+                  </div>
+                  <Button className="w-full gradient-primary">
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Plan Yükselt
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-effect border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white">Ödeme Geçmişi</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {paymentHistory.map((payment, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg">
+                      <div>
+                        <p className="text-white text-sm">{payment.plan}</p>
+                        <p className="text-gray-400 text-xs">{payment.date}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-green-400 font-bold">${payment.amount}</p>
+                        <div className="flex items-center space-x-2">
+                          <Badge className="bg-green-500/20 text-green-400">{payment.status}</Badge>
+                          <Button size="sm" variant="ghost">
+                            <FileText className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Affiliate Tab */}
         <TabsContent value="affiliate" className="space-y-6">
           <Card className="glass-effect border-white/10">
             <CardHeader>
-              <CardTitle className="text-white flex items-center space-x-2">
-                <Users className="h-5 w-5" />
-                <span>Affiliate Programı</span>
-              </CardTitle>
+              <CardTitle className="text-white">Affiliate Dashboard</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-green-400">$124.50</p>
-                  <p className="text-gray-400">Toplam Kazanç</p>
+                  <p className="text-2xl font-bold text-blue-400">{affiliateStats.totalReferrals}</p>
+                  <p className="text-gray-400 text-sm">Toplam Referans</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-blue-400">8</p>
-                  <p className="text-gray-400">Referans Sayısı</p>
+                  <p className="text-2xl font-bold text-green-400">${affiliateStats.earnings}</p>
+                  <p className="text-gray-400 text-sm">Toplam Kazanç</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-purple-400">%20</p>
-                  <p className="text-gray-400">Komisyon Oranı</p>
+                  <p className="text-2xl font-bold text-yellow-400">${affiliateStats.pendingPayment}</p>
+                  <p className="text-gray-400 text-sm">Bekleyen Ödeme</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-purple-400">{affiliateStats.conversionRate}%</p>
+                  <p className="text-gray-400 text-sm">Dönüşüm Oranı</p>
                 </div>
               </div>
-              
-              <div className="mt-6 p-4 bg-gray-800/30 rounded-lg">
-                <p className="text-white font-medium mb-2">Referans Linkiniz:</p>
-                <div className="flex items-center space-x-2">
-                  <input 
-                    type="text" 
-                    value="https://gagent.app/ref/ABC123"
-                    readOnly
-                    className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white"
-                  />
-                  <Button variant="outline">Kopyala</Button>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="text-gray-300 text-sm mb-2 block">Referans Linkiniz</label>
+                  <div className="flex space-x-2">
+                    <Input 
+                      value={affiliateStats.referralLink}
+                      readOnly
+                      className="bg-gray-800 border-white/20 text-white"
+                    />
+                    <Button 
+                      variant="outline"
+                      onClick={() => copyToClipboard(affiliateStats.referralLink)}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline">
+                      <Share2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Button className="gradient-primary">
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Ödeme Talep Et
+                  </Button>
+                  <Button variant="outline">
+                    <Eye className="h-4 w-4 mr-2" />
+                    Detaylı Rapor
+                  </Button>
                 </div>
               </div>
             </CardContent>
