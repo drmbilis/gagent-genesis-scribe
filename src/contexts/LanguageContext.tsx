@@ -1,77 +1,164 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-interface Translations {
-  [key: string]: {
-    en: string;
-    tr: string;
-  };
-}
-
-const translations: Translations = {
-  // Header
-  features: { en: 'Features', tr: 'Özellikler' },
-  pricing: { en: 'Pricing', tr: 'Fiyatlandırma' },
-  about: { en: 'About', tr: 'Hakkımızda' },
-  contact: { en: 'Contact', tr: 'İletişim' },
-  signIn: { en: 'Sign In', tr: 'Giriş Yap' },
-  getStarted: { en: 'Get Started', tr: 'Başlayın' },
-  dashboard: { en: 'Dashboard', tr: 'Dashboard' },
-  
-  // Hero Section
-  nextGenAI: { en: 'Next Generation AI Platform', tr: 'Yeni Nesil AI Platformu' },
-  discoverFuture: { en: 'Discover the Future with', tr: 'Geleceği Keşfedin' },
-  unlimitedCreativity: { en: 'Unlimited creativity with artificial intelligence. Enter your prompts, process your files and make secure payments with token system.', tr: 'Yapay zeka ile sınırsız yaratıcılık. Promptlarınızı girin, dosyalarınızı işleyin ve token sistemi ile güvenli ödemeler yapın.' },
-  getStartedFree: { en: 'Get Started Free', tr: 'Ücretsiz Başlayın' },
-  watchDemo: { en: 'Watch Demo', tr: 'Demo İzle' },
-  
-  // Features
-  fastAI: { en: 'Fast AI Responses', tr: 'Hızlı AI Yanıtları' },
-  fastAIDesc: { en: 'Get creative and intelligent responses from AI in seconds', tr: 'Saniyeler içinde AI\'dan yaratıcı ve akıllı yanıtlar alın' },
-  secureToken: { en: 'Secure Token System', tr: 'Güvenli Token Sistemi' },
-  secureTokenDesc: { en: 'Blockchain-based secure payment and token management', tr: 'Blockchain tabanlı güvenli ödeme ve token yönetimi' },
-  fileProcessing: { en: 'File Processing', tr: 'Dosya İşleme' },
-  fileProcessingDesc: { en: 'Upload your texts, process with AI and download results', tr: 'Metinlerinizi yükleyin, AI ile işleyin ve sonuçları indirin' },
-  powerfulFeatures: { en: 'Powerful Features', tr: 'Güçlü Özellikler' },
-  featuresDesc: { en: 'GAGENT platform will revolutionize your workflow with comprehensive features equipped with modern AI technologies', tr: 'GAGENT platformu modern AI teknolojileri ile donatılmış kapsamlı özelliklerle iş akışınızı devrim niteliğinde değiştirecek' },
-  
-  // Stats
-  activeUsers: { en: 'Active Users', tr: 'Aktif Kullanıcı' },
-  filesProcessed: { en: 'Files Processed', tr: 'İşlenen Dosya' },
-  uptime: { en: 'Uptime', tr: 'Çalışma Süresi' },
-  support: { en: 'Support', tr: 'Destek' },
-  
-  // Pricing
-  choosePlan: { en: 'Choose the plan that suits your needs and discover the power of GAGENT. All plans come with a 30-day money-back guarantee.', tr: 'İhtiyaçlarınıza uygun planı seçin ve GAGENT\'ın gücünü keşfedin. Tüm planlar 30 günlük para iade garantisi ile gelir.' },
-  starter: { en: 'Starter', tr: 'Başlangıç' },
-  pro: { en: 'Pro', tr: 'Pro' },
-  enterprise: { en: 'Enterprise', tr: 'Kurumsal' },
-  mostPopular: { en: 'Most Popular', tr: 'En Popüler' },
-  
-  // Footer
-  quickLinks: { en: 'Quick Links', tr: 'Hızlı Bağlantılar' },
-  allRightsReserved: { en: 'All rights reserved.', tr: 'Tüm hakları saklıdır.' },
-  privacyPolicy: { en: 'Privacy Policy', tr: 'Gizlilik Politikası' },
-  termsOfService: { en: 'Terms of Service', tr: 'Hizmet Şartları' },
-  cookiePolicy: { en: 'Cookie Policy', tr: 'Çerez Politikası' },
-  language: { en: 'Language', tr: 'Dil' },
-  english: { en: 'English', tr: 'İngilizce' },
-  turkish: { en: 'Turkish', tr: 'Türkçe' }
-};
+type Language = 'tr' | 'en';
 
 interface LanguageContextType {
-  language: 'en' | 'tr';
-  setLanguage: (lang: 'en' | 'tr') => void;
+  language: Language;
+  setLanguage: (lang: Language) => void;
   t: (key: string) => string;
 }
 
+const translations = {
+  tr: {
+    // Dashboard
+    'dashboard.welcome': 'Hoş geldin',
+    'dashboard.title': 'Dashboard',
+    'dashboard.overview': 'Genel Bakış',
+    'dashboard.aiServices': 'AI Servisleri',
+    'dashboard.tokenManagement': 'Token Yönetimi',
+    'dashboard.userPanel': 'Kullanıcı Paneli',
+    
+    // Payment Management
+    'payment.management': 'Ödeme Yönetimi',
+    'payment.openStripePortal': 'Stripe Portal\'ı Aç',
+    'payment.currentPlan': 'Mevcut Plan',
+    'payment.upgradePlan': 'Plan Yükselt',
+    'payment.transactions': 'İşlemler',
+    'payment.yourCurrentPlan': 'Mevcut Planınız',
+    'payment.active': 'Aktif',
+    'payment.tokenLimit': 'Token Limiti',
+    'payment.remainingTokens': 'Kalan Token',
+    'payment.renewalDate': 'Yenileme Tarihi',
+    'payment.autoRenewal': 'Otomatik Yenileme',
+    'payment.tokenUsage': 'Token Kullanımı',
+    'payment.manageSubscription': 'Aboneliği Yönet',
+    'payment.cancelSubscription': 'Aboneliği İptal Et',
+    'payment.monthlyPayment': '/ay',
+    
+    // Tokens
+    'tokens.remaining': 'Kalan Token',
+    'tokens.used': 'Toplam Kullanılan',
+    'tokens.monthlyCost': 'Aylık Maliyet',
+    'tokens.addTokens': 'Token ekle',
+    'tokens.insufficient': 'Yetersiz token',
+    'tokens.buy': 'Token satın al',
+    
+    // AI Services
+    'ai.chat': 'AI Sohbet',
+    'ai.sendMessage': 'Mesajınızı yazın...',
+    'ai.send': 'Gönder',
+    'ai.startConversation': 'AI asistanınızla sohbete başlayın...',
+    
+    // File Management
+    'files.management': 'Dosya Yönetimi',
+    'files.dragDrop': 'Dosyalarınızı buraya sürükleyin veya seçin',
+    'files.selectFile': 'Dosya Seç',
+    'files.recentFiles': 'Son Yüklenen Dosyalar',
+    
+    // Quick Actions
+    'quick.actions': 'Hızlı Erişim',
+    'quick.billing': 'Faturalandırma',
+    
+    // Admin
+    'admin.panel': 'Admin Panel',
+    'admin.notifications': 'Bildirimler',
+    'admin.profile': 'Profil',
+    'admin.settings': 'Ayarlar',
+    'admin.logout': 'Çıkış',
+    
+    // System Status
+    'system.operational': 'Sistem Çalışıyor',
+    'system.issues': 'Sorunlar Tespit Edildi',
+    
+    // Common
+    'common.save': 'Kaydet',
+    'common.cancel': 'İptal',
+    'common.edit': 'Düzenle',
+    'common.delete': 'Sil',
+    'common.loading': 'Yükleniyor...',
+    'common.error': 'Hata',
+    'common.success': 'Başarılı',
+  },
+  en: {
+    // Dashboard
+    'dashboard.welcome': 'Welcome',
+    'dashboard.title': 'Dashboard',
+    'dashboard.overview': 'Overview',
+    'dashboard.aiServices': 'AI Services',
+    'dashboard.tokenManagement': 'Token Management',
+    'dashboard.userPanel': 'User Panel',
+    
+    // Payment Management
+    'payment.management': 'Payment Management',
+    'payment.openStripePortal': 'Open Stripe Portal',
+    'payment.currentPlan': 'Current Plan',
+    'payment.upgradePlan': 'Upgrade Plan',
+    'payment.transactions': 'Transactions',
+    'payment.yourCurrentPlan': 'Your Current Plan',
+    'payment.active': 'Active',
+    'payment.tokenLimit': 'Token Limit',
+    'payment.remainingTokens': 'Remaining Tokens',
+    'payment.renewalDate': 'Renewal Date',
+    'payment.autoRenewal': 'Auto Renewal',
+    'payment.tokenUsage': 'Token Usage',
+    'payment.manageSubscription': 'Manage Subscription',
+    'payment.cancelSubscription': 'Cancel Subscription',
+    'payment.monthlyPayment': '/month',
+    
+    // Tokens
+    'tokens.remaining': 'Remaining Tokens',
+    'tokens.used': 'Total Used',
+    'tokens.monthlyCost': 'Monthly Cost',
+    'tokens.addTokens': 'Add tokens',
+    'tokens.insufficient': 'Insufficient tokens',
+    'tokens.buy': 'Buy tokens',
+    
+    // AI Services
+    'ai.chat': 'AI Chat',
+    'ai.sendMessage': 'Type your message...',
+    'ai.send': 'Send',
+    'ai.startConversation': 'Start conversation with your AI assistant...',
+    
+    // File Management
+    'files.management': 'File Management',
+    'files.dragDrop': 'Drag your files here or select them',
+    'files.selectFile': 'Select File',
+    'files.recentFiles': 'Recent Files',
+    
+    // Quick Actions
+    'quick.actions': 'Quick Access',
+    'quick.billing': 'Billing',
+    
+    // Admin
+    'admin.panel': 'Admin Panel',
+    'admin.notifications': 'Notifications',
+    'admin.profile': 'Profile',
+    'admin.settings': 'Settings',
+    'admin.logout': 'Logout',
+    
+    // System Status
+    'system.operational': 'System Operational',
+    'system.issues': 'Issues Detected',
+    
+    // Common
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.edit': 'Edit',
+    'common.delete': 'Delete',
+    'common.loading': 'Loading...',
+    'common.error': 'Error',
+    'common.success': 'Success',
+  }
+};
+
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<'en' | 'tr'>('en');
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('tr');
 
   const t = (key: string): string => {
-    return translations[key]?.[language] || key;
+    return translations[language][key] || key;
   };
 
   return (
@@ -83,7 +170,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
