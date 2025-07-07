@@ -10,6 +10,7 @@ import SystemStatus from "@/components/SystemStatus";
 import TokenInsufficient from "@/components/TokenInsufficient";
 import AIServices from "@/components/AIServices";
 import TokenManagement from "@/components/TokenManagement";
+import UserDashboard from "@/components/UserDashboard";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
@@ -35,6 +36,8 @@ const Dashboard = () => {
         return <AIServices />;
       case 'tokens':
         return <TokenManagement />;
+      case 'user-panel':
+        return <UserDashboard />;
       default:
         return (
           <>
@@ -102,16 +105,18 @@ const Dashboard = () => {
                   <History className="h-5 w-5 mr-3" />
                   Token Yönetimi
                 </Button>
+                <Button 
+                  onClick={() => setActiveTab('user-panel')}
+                  variant="ghost" 
+                  className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20"
+                >
+                  <User className="h-5 w-5 mr-3" />
+                  Kullanıcı Paneli
+                </Button>
                 <Link to="/billing">
                   <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
                     <CreditCard className="h-5 w-5 mr-3" />
                     Faturalandırma
-                  </Button>
-                </Link>
-                <Link to="/security">
-                  <Button variant="ghost" className="w-full justify-start h-12 text-gray-300 hover:text-white hover:bg-white/10 border border-white/10 hover:border-white/20">
-                    <Shield className="h-5 w-5 mr-3" />
-                    Güvenlik
                   </Button>
                 </Link>
               </div>
@@ -211,6 +216,12 @@ const Dashboard = () => {
             </Link>
             
             <div className="flex items-center space-x-4">
+              <Link to="/admin">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
+                  <Shield className="h-4 w-4 mr-2" />
+                  Admin Panel
+                </Button>
+              </Link>
               <Link to="/notifications">
                 <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-white/10">
                   <Bell className="h-4 w-4 mr-2" />
@@ -263,6 +274,13 @@ const Dashboard = () => {
               className={activeTab === 'tokens' ? 'gradient-primary text-white' : 'text-gray-300 hover:text-white'}
             >
               Token Yönetimi
+            </Button>
+            <Button
+              onClick={() => setActiveTab('user-panel')}
+              variant={activeTab === 'user-panel' ? 'default' : 'ghost'}
+              className={activeTab === 'user-panel' ? 'gradient-primary text-white' : 'text-gray-300 hover:text-white'}
+            >
+              Kullanıcı Paneli
             </Button>
           </div>
         </div>
