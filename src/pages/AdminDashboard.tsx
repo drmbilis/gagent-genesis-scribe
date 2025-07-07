@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -325,7 +324,7 @@ const AdminDashboard = () => {
               <div className="flex items-center space-x-2">
                 <Checkbox 
                   checked={comparisonMode}
-                  onCheckedChange={setComparisonMode}
+                  onCheckedChange={(checked) => setComparisonMode(checked === true)}
                 />
                 <span className="text-white text-sm">Karşılaştırma Modu</span>
               </div>
@@ -583,7 +582,7 @@ const AdminDashboard = () => {
                   <CardContent>
                     <form onSubmit={(e) => {
                       e.preventDefault();
-                      const formData = new FormData(e.target);
+                      const formData = new FormData(e.target as HTMLFormElement);
                       const userData = Object.fromEntries(formData);
                       if (editingUser) {
                         handleUpdateUser(editingUser.id, userData);
@@ -729,15 +728,15 @@ const AdminDashboard = () => {
                   <CardContent>
                     <form onSubmit={(e) => {
                       e.preventDefault();
-                      const formData = new FormData(e.target);
+                      const formData = new FormData(e.target as HTMLFormElement);
                       const packageData = {
-                        name: formData.get('name'),
-                        price: parseFloat(formData.get('price')),
-                        tokens: parseInt(formData.get('tokens')),
-                        description: formData.get('description'),
-                        billingCycle: formData.get('billingCycle'),
-                        status: formData.get('status'),
-                        features: formData.get('features').split('\n').filter(f => f.trim())
+                        name: formData.get('name') as string,
+                        price: parseFloat(formData.get('price') as string),
+                        tokens: parseInt(formData.get('tokens') as string),
+                        description: formData.get('description') as string,
+                        billingCycle: formData.get('billingCycle') as string,
+                        status: formData.get('status') as string,
+                        features: (formData.get('features') as string).split('\n').filter(f => f.trim())
                       };
                       if (editingPackage) {
                         handleUpdatePackage(editingPackage.id, packageData);
@@ -1237,21 +1236,21 @@ const AdminDashboard = () => {
                       <div className="flex items-center space-x-2">
                         <Checkbox 
                           checked={siteSettings.maintenanceMode}
-                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, maintenanceMode: checked})}
+                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, maintenanceMode: checked === true})}
                         />
                         <span className="text-gray-300 text-sm">Bakım modu</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox 
                           checked={siteSettings.userRegistration}
-                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, userRegistration: checked})}
+                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, userRegistration: checked === true})}
                         />
                         <span className="text-gray-300 text-sm">Kullanıcı kayıt</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox 
                           checked={siteSettings.emailVerification}
-                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, emailVerification: checked})}
+                          onCheckedChange={(checked) => setSiteSettings({...siteSettings, emailVerification: checked === true})}
                         />
                         <span className="text-gray-300 text-sm">E-posta doğrulama</span>
                       </div>
@@ -1324,7 +1323,7 @@ const AdminDashboard = () => {
                     <div className="flex items-center space-x-2">
                       <Checkbox 
                         checked={emailSettings.enableSsl}
-                        onCheckedChange={(checked) => setEmailSettings({...emailSettings, enableSsl: checked})}
+                        onCheckedChange={(checked) => setEmailSettings({...emailSettings, enableSsl: checked === true})}
                       />
                       <span className="text-gray-300 text-sm">SSL/TLS aktif</span>
                     </div>
