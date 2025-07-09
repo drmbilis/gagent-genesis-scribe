@@ -40,7 +40,7 @@ const Dashboard = () => {
           .limit(1)
           .single();
 
-        if (systemData) {
+        if (systemData && systemData.status) {
           setRealTimeData(prev => ({
             ...prev,
             systemStatus: systemData.status
@@ -62,10 +62,10 @@ const Dashboard = () => {
         table: 'system_status'
       }, (payload) => {
         console.log('System status update:', payload);
-        if (payload.new) {
+        if (payload.new && typeof payload.new === 'object' && 'status' in payload.new) {
           setRealTimeData(prev => ({
             ...prev,
-            systemStatus: payload.new.status
+            systemStatus: (payload.new as any).status
           }));
         }
       })
